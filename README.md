@@ -11,6 +11,7 @@ Note: This is a alpha project. By now, it only was tested on Kubuntu 16.04 LTS.
 - "href" attribute.
 - "bash" attribute.
 - "size" attribute.
+- "iconName" attribute (it should be a valid KDE icon name)
 - HTML support. Only the subset [supported by QML](http://doc.qt.io/qt-5/richtext-html-subset.html).
 - Interval detection on the command filename.
 
