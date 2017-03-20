@@ -7,7 +7,6 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.plasmoid 2.0
 import org.kde.kquickcontrolsaddons 2.0
 
-
 Item {
     id: root
     
@@ -18,16 +17,13 @@ Item {
     property int interval;    
     property int currentItemsInCommand;
     
-    Component.onCompleted: { 
-        currentItemsInCommand = 0;
-        
-        //first update
-        update();
-        
-        timer.running = true;
+    
+    Component.onCompleted: {        
+        timer.running = true;        
     }
-
+    
     function update() {
+        currentItemsInCommand = 0;
         executable.exec(plasmoid.configuration.command);
         updateInterval();
     }
@@ -48,6 +44,8 @@ Item {
                     case 'd': timer.interval = parseInt(intervalToken.slice(0, -1)) * 1000 * 3600 * 24; break;
                 }
             }
+        } else {
+            timer.interval = plasmoid.configuration.interval * 1000
         }
     }
     
@@ -68,6 +66,7 @@ Item {
                 }
             });
         }
+        console.log(JSON.stringify(parsedObject));
         return parsedObject;
     }
 
@@ -93,7 +92,7 @@ Item {
                 });                
             }            
         }
-        
+            
         return items;
     }
     
@@ -124,7 +123,7 @@ Item {
     
     Timer {
         id: timer
-        interval: 1000
+        interval: plasmoid.configuration.interval * 1000
         running: false
         repeat: true
         onTriggered: update()

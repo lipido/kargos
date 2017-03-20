@@ -12,6 +12,12 @@ PlasmaComponents.Label {
     
     Layout.preferredWidth: compactRoot.implicitWidth
     
+    Component.onCompleted: { 
+        // first update
+        root.update();
+        
+    }
+
     MouseArea {
         anchors.fill : parent
         onClicked: {            
@@ -24,6 +30,7 @@ PlasmaComponents.Label {
     }
     
     function update(stdout) {
+       
         compactRoot.text = root.parseLine(stdout.split('\n')[0]).title;
     }
     

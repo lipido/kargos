@@ -5,8 +5,6 @@ import QtQuick.Layouts 1.1
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.calendar 2.0 as PlasmaCalendar
 
-
-
 Item {
     id: fullRoot
     Layout.preferredWidth: 1//this value 
@@ -15,6 +13,10 @@ Item {
         id: kargosModel
     }
     
+    Component.onCompleted: { 
+        //first update
+        root.update();     
+    }
     
     ListView {        
         id: listView
@@ -33,29 +35,30 @@ Item {
                 
                 text: title.replace(/\\n/g, "<br>")
                 MouseArea {
-                    cursorShape: (bash!==undefined || href!==undefined) ? Qt.PointingHandCursor: Qt.ArrowCursor
+                    cursorShape: (typeof bash!=='undefined'|| typeof href !== 'undefined' || typeof refresh !== 'undefined') ? Qt.PointingHandCursor: Qt.ArrowCursor
                     anchors.fill: parent
                 
                     onClicked: {
-                        console.log('clicked');
-                         if (bash !== undefined) {
-                         
+                        console.log('clicked ');
+                        
+                        if (typeof bash !== 'undefined') {                         
                             executable.exec(bash);
                         }
                         
-                        if (href !== undefined) {
-                         
-                            executable.exec('xdg-open '+href);
+                        if (typeof href !== 'undefined') {
+                            executable.exec('xdg-open '+model.href);
                         
+                        }
+                        
+                        if (typeof refresh !== 'undefined' && refresh == 'true') {
+                            console.log('refreshing');
+                            root.update();
                         }
                     }
                 }
             }
         }
     }
-    
-    
-    
     
     Connections {
         target: executable
