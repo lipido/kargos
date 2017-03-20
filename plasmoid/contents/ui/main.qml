@@ -66,7 +66,7 @@ Item {
                 }
             });
         }
-        console.log(JSON.stringify(parsedObject));
+        
         return parsedObject;
     }
 
@@ -85,7 +85,6 @@ Item {
                 var groupTokens = groupString.trim().split('\n');
                 groupTokens.forEach(function (groupToken) {                
                     var parsedItem = root.parseLine(groupToken);
-                   // console.log('adding '+JSON.stringify(parsedItem));
                     items.push(parsedItem);
                     totalItems ++;
                     

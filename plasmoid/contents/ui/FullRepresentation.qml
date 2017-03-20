@@ -39,7 +39,6 @@ Item {
                     anchors.fill: parent
                 
                     onClicked: {
-                        console.log('clicked ');
                         
                         if (typeof bash !== 'undefined') {                         
                             executable.exec(bash);
