@@ -10,17 +10,16 @@ import org.kde.kquickcontrolsaddons 2.0
 
 Item {
     id: root
+    
     Plasmoid.preferredRepresentation: Plasmoid.compactRepresentation
     Plasmoid.compactRepresentation: CompactRepresentation {}
     Plasmoid.fullRepresentation: FullRepresentation {}
     
-    property int interval;
-    
+    property int interval;    
     property int currentItemsInCommand;
     
     Component.onCompleted: { 
         currentItemsInCommand = 0;
-        
         
         //first update
         update();
@@ -30,7 +29,7 @@ Item {
 
     function update() {
         executable.exec(plasmoid.configuration.command);
-       // updateInterval();
+        updateInterval();
     }
     
     function updateInterval() {
@@ -52,9 +51,7 @@ Item {
         }
     }
     
-    /**
-    * Parses the the line following the Argos convention https://github.com/p-e-w/argos#output-format
-    */
+    
     function parseLine(line) {
         var parsedObject = {title: line};
         
@@ -74,6 +71,7 @@ Item {
         return parsedObject;
     }
 
+    
     function parseItems(stdout) {
         var items = [];
         
@@ -91,30 +89,12 @@ Item {
                    // console.log('adding '+JSON.stringify(parsedItem));
                     items.push(parsedItem);
                     totalItems ++;
-                    //kargosModel.sync();
                     
-                    //menuItem.triggered.connect(function() {
-                     //   console.log('click in '+parsedItem.text);
-                        
-                    //    if (parsedItem.bash !== undefined) {
-                     //       executable.exec(parsedItem.bash);
-                     //   }
-                        
-                     //   if (parsedItem.href !== undefined) {
-                     //       executable.exec('xdg-open '+parsedItem.href);
-                        
-                     //   }
-                    //});
-                    
-                    
-                });
-                
-            }
-            
+                });                
+            }            
         }
+        
         return items;
-        
-        
     }
     
     // Object to run commands
@@ -148,6 +128,5 @@ Item {
         running: false
         repeat: true
         onTriggered: update()
-    }
-    
+    }    
 }
