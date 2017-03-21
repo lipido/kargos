@@ -9,7 +9,7 @@ custom plasmoids.
 
 ## What is implemented
 
-- Basic menu level (**no submenus yet!**)
+- Submenus nesting ('--').
 - "href" attribute.
 - "bash" attribute.
 - "size" attribute.

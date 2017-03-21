@@ -50,11 +50,10 @@ Item {
     }
     
     
-    function parseLine(line) {
+    function parseLine(line, currentCategory) {
         var parsedObject = {title: line};
         
         if (line.indexOf('|') != -1) {
-            
             parsedObject.title = line.split('|')[0].trim();
             
             var attributesToken = line.split('|')[1].trim();
@@ -67,12 +66,20 @@ Item {
             });
         }
         
+        
+        if (parsedObject.title.match(/^--/)) {
+            parsedObject.title = parsedObject.title.substring(2).trim();
+            if (currentCategory !== undefined) {
+                parsedObject.category = currentCategory;
+            }
+        }
+        
         return parsedObject;
     }
-
     
     function parseItems(stdout) {
         var items = [];
+        var currentCategory = null;
         
         var menuGroupsStrings = stdout.split("---");
         
@@ -84,7 +91,10 @@ Item {
                 
                 var groupTokens = groupString.trim().split('\n');
                 groupTokens.forEach(function (groupToken) {                
-                    var parsedItem = root.parseLine(groupToken);
+                    var parsedItem = root.parseLine(groupToken, currentCategory);
+                    if (parsedItem.category === undefined) {
+                        currentCategory = parsedItem.title;
+                    }
                     items.push(parsedItem);
                     totalItems ++;
                     
