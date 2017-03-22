@@ -16,6 +16,7 @@ custom plasmoids.
 - "refresh" attribute.
 - "iconName" attribute (it should be a valid KDE icon name)
 - "font" attribute.
+- "dropdown" attribute.
 - HTML support. Only the subset [supported by QML](http://doc.qt.io/qt-5/richtext-html-subset.html).
 - Interval detection on the command filename. A custom interval option is available.
 

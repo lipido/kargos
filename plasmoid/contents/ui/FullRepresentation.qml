@@ -137,34 +137,24 @@ Item {
         var items = parseItems(stdout);
         
         items.forEach(function(item) {
-            if (item.category !== undefined) {
-                if (fullRoot.categories[item.category] === undefined) {
-                    fullRoot.categories[item.category] = {visible : false, items: [], rows: []};
-                }
+            if (item.dropdown === undefined || item.dropdown === 'true') {
                 if (item.category !== undefined) {
-                    fullRoot.categories[item.category].items.push(item);
+                    if (fullRoot.categories[item.category] === undefined) {
+                        fullRoot.categories[item.category] = {visible : false, items: [], rows: []};
+                    }
+                    
+                    if (item.category !== undefined) {
+                        fullRoot.categories[item.category].items.push(item);
+                    }
                 }
             }
         });
         
         items.forEach(function(item) {
-            kargosModel.append(item);
+            if (item.dropdown === undefined || item.dropdown === true) {
+                kargosModel.append(item);
+            }
         });
     }
-    
-    /*function updateWidth() {
-        var max = -1;
-        
-        for(var child in listView.contentItem.children) {
-            
-            if (listView.contentItem.children[child].width > max) {
-                max = listView.contentItem.children[child].width;
-            }
-        }
-        
-        if (max > 0) {
-            fullRoot.Layout.width = max;
-        }
-    }*/
 }
 

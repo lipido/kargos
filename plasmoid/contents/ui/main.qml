@@ -104,7 +104,6 @@ Item {
                 });                
             }            
         }
-            
         return items;
     }
     

@@ -15,6 +15,9 @@
     <entry name="width" type="int">
       <default>600</default>
     </entry>
+    <entry name="rotation" type="int">
+      <default>5</default>
+    </entry>
   </group>
 
 </kcfg>

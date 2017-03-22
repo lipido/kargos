@@ -11,9 +11,9 @@ ConfigPage {
     property alias cfg_command: command.text
     property alias cfg_interval: interval.value
     property alias cfg_width: width.value
+    property alias cfg_rotation: rotation.value
     
     ConfigSection {
-
         label: i18n("Command line or executable path. The output of this command will be parsed following the Argos/Bitbar convention")
         
         TextField {
@@ -23,7 +23,6 @@ ConfigPage {
     }
     
     ConfigSection {
-
         label: i18n("Interval in seconds (ignored if the previous property is an executable with the interval on its name. ex: myplugin.1s.sh)")
         
         SpinBox {
@@ -33,13 +32,23 @@ ConfigPage {
     }
     
     ConfigSection {
-
         label: i18n("Preferred width in px")
         
         SpinBox {
             id: width
             Layout.fillWidth: true        
             maximumValue: 10000
+        }
+    }
+    
+    
+    ConfigSection {
+        label: i18n("Rotation delay in seconds (rotation interval of the lines before the ---)")
+        
+        SpinBox {
+            id: rotation
+            Layout.fillWidth: true        
+            maximumValue: 60
         }
     }
 }
