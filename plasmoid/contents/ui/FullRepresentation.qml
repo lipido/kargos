@@ -26,6 +26,7 @@ Item {
     // status of submenus
     property var categories: ({});
     
+        
     ListView {        
         id: listView
         anchors.fill: parent
@@ -36,8 +37,8 @@ Item {
         
         delegate: Row {
             id: row
-            height: (typeof category === 'undefined' || (fullRoot.categories[category] && fullRoot.categories[category].visible)) ? row.visibleHeight: 0
-            visible: (typeof category === 'undefined') ? true : (fullRoot.categories[category] !== undefined && fullRoot.categories[category].visible)
+            height: (typeof category === 'undefined' || (fullRoot.categories[category].visible)) ? row.visibleHeight: 0
+            visible: (typeof category === 'undefined') ? true : (fullRoot.categories[category].visible)
             property int visibleHeight: itemLabel.height + 10
             
             PlasmaCore.IconItem {
@@ -84,21 +85,11 @@ Item {
                     cursorShape: Qt.PointingHandCursor
                     anchors.fill: parent
                     onClicked: {
-                            
-                        // toggle childs visible
-                        fullRoot.categories[itemLabel.text].rows.forEach(function(row) {
-                            if (row.visible === true) {
-                                row.visible = false;
-                                row.height = 0;
-                            } else {
-                                row.visible = true;
-                                row.height = row.visibleHeight;
-                            }
-                        });
-                        
-                        fullRoot.categories[itemLabel.text].visible = !fullRoot.categories[itemLabel.text].visible;
-                        arrow_icon.source = arrow_icon.source === 'arrow-up'? 'arrow-down': 'arrow-up' 
-                        
+                       // In order to notify binding of fullRoot.categories property, we clone it, and then reassign it.
+                       var newState = fullRoot.copyObject(fullRoot.categories);
+                       newState[itemLabel.text].visible = !newState[itemLabel.text].visible
+                       
+                       fullRoot.categories = newState;
                     }
                 }
             }  
@@ -112,6 +103,17 @@ Item {
                     update(stdout);
                 }
         }
+    }
+    
+    function copyObject(object) {
+        var copy = {};
+            
+        Object.keys(object).forEach(function(prop) {
+            copy[prop] = object[prop];
+            
+        });
+        
+        return copy;
     }
     
     function update(stdout) {
@@ -132,7 +134,6 @@ Item {
         
         items.forEach(function(item) {
             kargosModel.append(item);
-            
         });
     }
     
