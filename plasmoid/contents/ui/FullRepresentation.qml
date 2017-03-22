@@ -51,23 +51,33 @@ Item {
             
             PlasmaComponents.Label {
                 id: itemLabel
-                text: title.replace(/\\n/g, "<br>")
+                text: fullRoot.createTitleText(model);
                 wrapMode: Text.WordWrap
                 width: fullRoot.width - arrow_icon.width - 30//some right margin
+                
+                Component.onCompleted: {
+                    if (typeof model.font !== 'undefined') {
+                        font.family = model.font;
+                    }
+                    if (typeof model.size !== 'undefined') {
+                        font.pointSize = model.size;
+                    }
+                }
+            
                 MouseArea {
-                    cursorShape: (typeof bash!=='undefined'|| typeof href !== 'undefined' || typeof refresh !== 'undefined') ? Qt.PointingHandCursor: Qt.ArrowCursor
+                    cursorShape: (typeof model.bash!=='undefined'|| typeof model.href !== 'undefined' || typeof model.refresh !== 'undefined') ? Qt.PointingHandCursor: Qt.ArrowCursor
                     anchors.fill: parent
                 
                     onClicked: {
-                        if (typeof bash !== 'undefined') {                         
-                            executable.exec(bash);
+                        if (typeof model.bash !== 'undefined') {                         
+                            executable.exec(model.bash);
                         }
                         
-                        if (typeof href !== 'undefined') {
+                        if (typeof model.href !== 'undefined') {
                             executable.exec('xdg-open '+model.href);
                         }
                         
-                        if (typeof refresh !== 'undefined' && refresh == 'true') {
+                        if (typeof model.refresh !== 'undefined' && model.refresh == 'true') {
                             root.update();
                         }
                     }
@@ -77,8 +87,8 @@ Item {
             // expand-collapse icon
             PlasmaCore.IconItem {
                 id: arrow_icon
-                source: (fullRoot.categories[itemLabel.text] !== undefined && fullRoot.categories[itemLabel.text].visible) ? 'arrow-down': 'arrow-up'
-                visible: (typeof category === 'undefined' && fullRoot.categories[itemLabel.text] !== undefined && fullRoot.categories[itemLabel.text].items.length > 0) ? true:false
+                source: (fullRoot.categories[model.title] !== undefined && fullRoot.categories[model.title].visible) ? 'arrow-down': 'arrow-up'
+                visible: (typeof model.category === 'undefined' && fullRoot.categories[model.title] !== undefined && fullRoot.categories[model.title].items.length > 0) ? true:false
                 
                 MouseArea {
                     cursorShape: Qt.PointingHandCursor
@@ -86,7 +96,7 @@ Item {
                     onClicked: {
                        // In order to notify binding of fullRoot.categories property, we clone it, and then reassign it.
                        var newState = fullRoot.copyObject(fullRoot.categories);
-                       newState[itemLabel.text].visible = !newState[itemLabel.text].visible
+                       newState[model.title].visible = !newState[model.title].visible
                        
                        fullRoot.categories = newState;
                     }
@@ -115,6 +125,12 @@ Item {
         return copy;
     }
     
+    function createTitleText(item) {
+        var titleText = '<div>'+item.title.replace(/\\n/g, '<br>').replace(/  /g, '&nbsp;&nbsp;') + '</div>';
+        
+        return titleText;
+        
+    }
     function update(stdout) {
         kargosModel.clear();
         

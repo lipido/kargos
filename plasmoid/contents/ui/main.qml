@@ -77,7 +77,6 @@ Item {
                 parsedObject.category = currentCategory;
             }
         }
-        
         return parsedObject;
     }
     
