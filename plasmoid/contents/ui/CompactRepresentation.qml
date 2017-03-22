@@ -30,7 +30,6 @@ PlasmaComponents.Label {
     }
     
     function update(stdout) {
-       
         compactRoot.text = root.parseLine(stdout.split('\n')[0]).title;
     }
     

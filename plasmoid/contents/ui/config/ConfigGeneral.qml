@@ -23,7 +23,7 @@ ConfigPage {
     
     ConfigSection {
 
-        label: i18n("Interval in seconds (ignored if the previous property is an executable with the interval on its name. ex: myplugin.1s.sh")
+        label: i18n("Interval in seconds (ignored if the previous property is an executable with the interval on its name. ex: myplugin.1s.sh)")
         
         SpinBox {
             id: interval
