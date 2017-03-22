@@ -10,6 +10,7 @@ ConfigPage {
     
     property alias cfg_command: command.text
     property alias cfg_interval: interval.value
+    property alias cfg_width: width.value
     
     ConfigSection {
 
@@ -28,6 +29,17 @@ ConfigPage {
         SpinBox {
             id: interval
             Layout.fillWidth: true            
+        }
+    }
+    
+    ConfigSection {
+
+        label: i18n("Preferred width in px")
+        
+        SpinBox {
+            id: width
+            Layout.fillWidth: true        
+            maximumValue: 10000
         }
     }
 }

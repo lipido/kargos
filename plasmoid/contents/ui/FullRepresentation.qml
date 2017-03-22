@@ -8,7 +8,7 @@ import org.kde.plasma.calendar 2.0 as PlasmaCalendar
 Item {
     id: fullRoot
     
-    Layout.preferredWidth: 1//this value will be changed
+    Layout.preferredWidth: plasmoid.configuration.width
     
     ListModel {
         id: kargosModel
@@ -31,15 +31,13 @@ Item {
         id: listView
         anchors.fill: parent
         model: kargosModel
-        add:{
-            updateWidth()
-        }
         
         delegate: Row {
             id: row
             height: (typeof category === 'undefined' || (fullRoot.categories[category].visible)) ? row.visibleHeight: 0
             visible: (typeof category === 'undefined') ? true : (fullRoot.categories[category].visible)
             property int visibleHeight: itemLabel.height + 10
+            
             
             PlasmaCore.IconItem {
                 source: (typeof iconName !== 'undefined')? iconName: null
@@ -54,7 +52,8 @@ Item {
             PlasmaComponents.Label {
                 id: itemLabel
                 text: title.replace(/\\n/g, "<br>")
-                
+                wrapMode: Text.WordWrap
+                width: fullRoot.width - arrow_icon.width - 30//some right margin
                 MouseArea {
                     cursorShape: (typeof bash!=='undefined'|| typeof href !== 'undefined' || typeof refresh !== 'undefined') ? Qt.PointingHandCursor: Qt.ArrowCursor
                     anchors.fill: parent
@@ -137,7 +136,7 @@ Item {
         });
     }
     
-    function updateWidth() {
+    /*function updateWidth() {
         var max = -1;
         
         for(var child in listView.contentItem.children) {
@@ -148,8 +147,8 @@ Item {
         }
         
         if (max > 0) {
-            fullRoot.Layout.preferredWidth = max;
+            fullRoot.Layout.width = max;
         }
-    }
+    }*/
 }
 

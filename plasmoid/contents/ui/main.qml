@@ -10,14 +10,18 @@ import org.kde.kquickcontrolsaddons 2.0
 Item {
     id: root
     
-    Plasmoid.preferredRepresentation: Plasmoid.compactRepresentation
+    Plasmoid.preferredRepresentation: isConstrained() ? Plasmoid.compactRepresentation : Plasmoid.fullRepresentation
+
     Plasmoid.compactRepresentation: CompactRepresentation {}
     Plasmoid.fullRepresentation: FullRepresentation {}
     
     property int interval;    
     property int currentItemsInCommand;
     
-    
+    function isConstrained() {
+        return (plasmoid.formFactor == PlasmaCore.Types.Vertical || plasmoid.formFactor == PlasmaCore.Types.Horizontal);
+    }
+
     Component.onCompleted: {        
         timer.running = true;        
     }
