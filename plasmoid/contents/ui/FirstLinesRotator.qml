@@ -12,6 +12,8 @@ PlasmaComponents.Label {
     
     Component.onCompleted: { 
         rotationTimer.running = true
+        console.log('command: '+plasmoid.configuration.command);
+        
     }
 
     property var rotatingItems : []
@@ -20,10 +22,12 @@ PlasmaComponents.Label {
     
     
     function update(stdout) {
+        
         var beforeSeparator = true;
       
         
         var newItems = [];
+        
         stdout.split('\n').forEach(function(line) {
             if (line.trim().length === 0) {
                 return;
@@ -49,11 +53,19 @@ PlasmaComponents.Label {
         }
         
         control.rotatingItems = newItems;
+        
+        
+        if (plasmoid.configuration.command == '') {
+            control.text = 'No command configured. Go to settings...';
+        } else {
+            control.text = (rotatingItems.length > 0) ? rotatingItems[currentMessage].title : 'starting...'
+        }
     }
     
     Connections {
         target: executable
         onExited: {
+                
                 if (sourceName === plasmoid.configuration.command) {
                     update(stdout);
                 }
