@@ -31,7 +31,17 @@ Item {
         anchors.fill: parent
         model: kargosModel
         
-        header: FirstLinesRotator { }
+        header: createHeader();
+        
+        function createHeader() {
+            if (!root.isConstrained()) {
+                return Qt.createComponent("FirstLinesRotator.qml");
+            } else {
+                return null;
+            }
+          //return component.createObject(fullRoot);
+
+        }
         
         delegate: Row {
             id: row
@@ -48,6 +58,7 @@ Item {
                     if (typeof category !== 'undefined') {
                         fullRoot.categories[category].rows.push(row);
                     }
+                    
             }
             
             PlasmaComponents.Label {

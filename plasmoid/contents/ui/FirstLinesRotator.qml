@@ -8,18 +8,30 @@ PlasmaComponents.Label {
     
     id: control
     
-    text: (rotatingItems.length > 0) ? rotatingItems[currentMessage].title : 'starting...'
+    text: 'starting...'
     
     Component.onCompleted: { 
         rotationTimer.running = true
-        console.log('command: '+plasmoid.configuration.command);
         
     }
 
     property var rotatingItems : []
     
-    property int currentMessage : -1
+    property var currentMessage : -1
     
+    
+    function updateText() {
+        var item = getCurrentItem();
+        if (item !== null) {
+            text = item.title;
+        } else {
+            text = 'starting...';
+        }
+    }
+    
+    function getCurrentItem() {
+        return (rotatingItems.length > 0 && currentMessage != -1) ? rotatingItems[currentMessage] : null;
+    }
     
     function update(stdout) {
         
@@ -58,14 +70,13 @@ PlasmaComponents.Label {
         if (plasmoid.configuration.command == '') {
             control.text = 'No command configured. Go to settings...';
         } else {
-            control.text = (rotatingItems.length > 0) ? rotatingItems[currentMessage].title : 'starting...'
+            updateText();
         }
     }
     
     Connections {
         target: executable
         onExited: {
-                
                 if (sourceName === plasmoid.configuration.command) {
                     update(stdout);
                 }
@@ -78,8 +89,39 @@ PlasmaComponents.Label {
         running: false
         repeat: true
         onTriggered: {
-            if (rotatingItems.length > 0) {
+            if (control.rotatingItems.length > 0) {
                 control.currentMessage = (control.currentMessage + 1) % control.rotatingItems.length;
+                
+            }
+            updateText();
+        }
+    }
+    
+    MouseArea {
+        anchors.fill: parent
+        propagateComposedEvents: true
+        hoverEnabled: true
+        
+        onEntered: {
+            var item = getCurrentItem();
+            if (item.href !== undefined) {
+                goButton.visible = true;
+            }
+        }
+        onExited: {
+            goButton.visible = false;
+        }
+        
+        Button {
+            id: goButton
+            text: 'Go'
+            anchors.right: parent.right
+            visible: false
+            onClicked: {
+                var item = getCurrentItem();
+                if (item.href !== undefined) {
+                    executable.exec('xdg-open '+item.href);
+                }
             }
         }
     }
