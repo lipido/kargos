@@ -16,7 +16,7 @@ Item {
     Plasmoid.fullRepresentation: FullRepresentation {}
     
     property int interval;    
-    property int currentItemsInCommand;
+    property int currentItemsInCommand: -1;
     
     function isConstrained() {
         return (plasmoid.formFactor == PlasmaCore.Types.Vertical || plasmoid.formFactor == PlasmaCore.Types.Horizontal);
@@ -128,9 +128,11 @@ Item {
     Connections {
         target: executable
         onExited: {
-                currentItemsInCommand = parseItems(stdout).length
-                if (stdout.indexOf('---') === -1) {
-                    plasmoid.expanded = false
+                if (sourceName === plasmoid.configuration.command) {
+                    currentItemsInCommand = parseItems(stdout).length
+                    if (stdout.indexOf('---') === -1) {
+                        plasmoid.expanded = false
+                    }
                 }
         }
     }

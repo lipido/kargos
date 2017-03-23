@@ -14,7 +14,7 @@ Item {
     MouseArea {
         anchors.fill : parent
         
-        onClicked: {           
+        onClicked: {
             if (root.currentItemsInCommand > 0 && !plasmoid.expanded) {
                 plasmoid.expanded = true;            
             } else if (plasmoid.expanded) {

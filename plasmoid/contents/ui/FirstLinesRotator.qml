@@ -104,7 +104,7 @@ PlasmaComponents.Label {
         
         onEntered: {
             var item = getCurrentItem();
-            if (item.href !== undefined) {
+            if (item !== null && item.href !== undefined) {
                 goButton.visible = true;
             }
         }
@@ -119,7 +119,7 @@ PlasmaComponents.Label {
             visible: false
             onClicked: {
                 var item = getCurrentItem();
-                if (item.href !== undefined) {
+                if (item !== null && item.href !== undefined) {
                     executable.exec('xdg-open '+item.href);
                 }
             }
