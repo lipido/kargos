@@ -129,6 +129,10 @@ Item {
         target: executable
         onExited: {
                 currentItemsInCommand = parseItems(stdout).length
+                console.log(Object.keys(plasmoid));
+                if (stdout.indexOf('---') === -1) {
+                    plasmoid.expanded = false
+                }
         }
     }
     

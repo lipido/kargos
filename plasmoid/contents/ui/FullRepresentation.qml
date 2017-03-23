@@ -26,11 +26,12 @@ Item {
     // status of submenus
     property var categories: ({});
     
-        
     ListView {        
         id: listView
         anchors.fill: parent
         model: kargosModel
+        
+        header: FirstLinesRotator { }
         
         delegate: Row {
             id: row
