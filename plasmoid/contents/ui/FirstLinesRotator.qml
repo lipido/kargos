@@ -4,33 +4,18 @@ import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.1
 import org.kde.plasma.core 2.0 as PlasmaCore
 
-PlasmaComponents.Label {
-    
+Row {
     id: control
-    
-    text: 'starting...'
     
     anchors.left: parent.left
     anchors.right: parent.right
     
-    Component.onCompleted: { 
-        rotationTimer.running = true
-        
-    }
-
+    property bool buttonHidingDelay: false
+    
+    Layout.preferredWidth: label.implicitWidth
+    
     property var rotatingItems : []
-    
     property var currentMessage : -1
-    
-    
-    function updateText() {
-        var item = getCurrentItem();
-        if (item !== null) {
-            text = item.title;
-        } else {
-            text = 'starting...';
-        }
-    }
     
     function getCurrentItem() {
         return (rotatingItems.length > 0 && currentMessage != -1) ? rotatingItems[currentMessage] : null;
@@ -39,8 +24,6 @@ PlasmaComponents.Label {
     function update(stdout) {
         
         var beforeSeparator = true;
-      
-        
         var newItems = [];
         
         stdout.split('\n').forEach(function(line) {
@@ -60,29 +43,85 @@ PlasmaComponents.Label {
         });
         
         if (newItems.length == 0) {
-            control.currentMessage = -1;
-        } else if (control.currentMessage >= newItems.length) {
-            control.currentMessage = 0;
-        } else if (control.currentMessage === -1) {
-            control.currentMessage = 0;
+            currentMessage = -1;
+        } else if (currentMessage >= newItems.length) {
+            currentMessage = 0;
+        } else if (currentMessage === -1) {
+            currentMessage = 0;
         }
         
-        control.rotatingItems = newItems;
+        rotatingItems = newItems;
         
         
         if (plasmoid.configuration.command == '') {
-            control.text = 'No command configured. Go to settings...';
+            label.text = 'No command configured. Go to settings...';
         } else {
-            updateText();
+            label.update();
+            icon.update();
+        }
+        
+    }
+    
+    PlasmaCore.IconItem {
+        id: icon
+        visible: false
+        function update() {
+            var item = getCurrentItem();
+            source = (item.iconName !== 'undefined')? item.iconName: null
+            if (source == null) {
+                visible = false;
+            } else {
+                visible = true;
+            }
         }
     }
     
-    Connections {
+PlasmaComponents.Label {
+    id: label
+    text: 'starting...'
+    
+    property var defaultFontFamily;
+    property var defaultFontSize;
+    Component.onCompleted: {
+        defaultFontFamily = font.family;
+        defaultFontSize = font.pointSize;
+        update();
+        rotationTimer.running = true
+    }
+                
+
+    function update() {
+        var item = getCurrentItem();
+        if (item !== null) {
+            text = item.title;
+            if (item.font !== undefined) {
+                font.family = item.font;
+            } else {
+                font.family = defaultFontFamily;
+            }
+            if (item.size !== undefined) {
+                font.pointSize = item.size;
+            } else {
+                font.pointSize = defaultFontSize;
+            }
+        } else {
+            text = 'starting...';
+        }
+        mousearea.item = item;
+    }
+    
+    ItemTextMouseArea {
+        id: mousearea
+        buttonHidingDelay: control.buttonHidingDelay
+    }
+}
+
+Connections {
         target: executable
         onExited: {
-                if (sourceName === plasmoid.configuration.command) {
-                    update(stdout);
-                }
+            if (sourceName === plasmoid.configuration.command) {                    
+                control.update(stdout);
+            }
         }
     }
     
@@ -96,88 +135,8 @@ PlasmaComponents.Label {
                 control.currentMessage = (control.currentMessage + 1) % control.rotatingItems.length;
                 
             }
-            updateText();
+            label.update();
             mousearea.reset();
         }
-    }
-    
-    MouseArea {
-        id: mousearea
-        anchors.fill: parent
-        propagateComposedEvents: true
-        hoverEnabled: true
-        cursorShape: (getCurrentItem() !==null && getCurrentItem().refresh == 'true') ? Qt.PointingHandCursor: Qt.ArrowCursor
-        
-        property bool onButtons: false
-        onClicked: {
-            console.log('click');
-            var item = getCurrentItem();
-            if (item !== null && item.refresh == 'true') {
-                root.update();
-            }
-            mouse.accepted = false
-        }
-                
-        onEntered: {
-            var item = getCurrentItem();
-            if (item !== null && item.href !== undefined) {
-               if (!goButton.visible) goButton.visible = true;
-            }
-            if (item !== null && item.bash !== undefined) {
-                runButton.visible = true;
-            }
-        }
-        
-        onExited: {
-            console.log('EXIT');
-            buttonHidder.restart();
-        }
-        
-        function reset() {
-            goButton.visible = false;
-            runButton.visible = false;
-        }
-
-        Timer {
-            id: buttonHidder
-            interval: 1000
-            onTriggered: {
-                goButton.visible = false;
-                runButton.visible = false;
-            }
-        }
-        
-        Button {
-            id: goButton
-            text: 'Go'
-            anchors.right: parent.right
-            visible: false
-            onClicked: {
-                console.log('goclick');
-                var item = getCurrentItem();
-                if (item !== null && item.href !== undefined) {
-                    executable.exec('xdg-open '+item.href);
-                }
-            }
-            
-        }
-        
-        Button {
-            id: runButton
-            text: 'Run'
-            anchors.right: goButton.left
-            anchors.rightMargin: 5
-            visible: false
-            onClicked: {
-                var item = getCurrentItem();
-                if (item !== null && item.bash !== undefined) {
-                    executable.exec(item.bash);
-                }
-            }
-            
-            
-        }
-        
-        
     }
 }

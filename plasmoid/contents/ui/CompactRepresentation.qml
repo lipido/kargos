@@ -25,6 +25,7 @@ Item {
     
     FirstLinesRotator {
         id: rotator
+        buttonHidingDelay: true
     }
 }
 

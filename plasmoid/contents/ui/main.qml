@@ -11,7 +11,6 @@ Item {
     id: root
     
     Plasmoid.preferredRepresentation: isConstrained() ? Plasmoid.compactRepresentation : Plasmoid.fullRepresentation
-    //Plasmoid.preferredRepresentation: Plasmoid.compactRepresentation
 
     Plasmoid.compactRepresentation: CompactRepresentation {}
     Plasmoid.fullRepresentation: FullRepresentation {}
@@ -24,8 +23,10 @@ Item {
     }
 
     Component.onCompleted: {        
-        timer.running = true;        
+        timer.running = true;     
+        plasmoid.addEventListener('ConfigChanged', update);
     }
+    
     
     function update() {
         currentItemsInCommand = 0;
