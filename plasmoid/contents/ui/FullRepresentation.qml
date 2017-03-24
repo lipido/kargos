@@ -77,22 +77,60 @@ Item {
                 }
             
                 MouseArea {
-                    cursorShape: (typeof model.bash!=='undefined'|| typeof model.href !== 'undefined' || typeof model.refresh !== 'undefined') ? Qt.PointingHandCursor: Qt.ArrowCursor
+                    id: mousearea
+                    cursorShape: (typeof model.refresh !== 'undefined' && model.refresh == 'true')? Qt.PointingHandCursor: Qt.ArrowCursor
                     anchors.fill: parent
+                    hoverEnabled: true
                 
                     onClicked: {
-                        if (typeof model.bash !== 'undefined') {                         
-                            executable.exec(model.bash);
-                        }
-                        
-                        if (typeof model.href !== 'undefined') {
-                            executable.exec('xdg-open '+model.href);
-                        }
-                        
                         if (typeof model.refresh !== 'undefined' && model.refresh == 'true') {
                             root.update();
                         }
                     }
+                    
+                    onEntered: {
+                        timer.running = false //avoid updates while user is hovering, because buttons disappear
+                        if (model.href !== undefined) {
+                            goButton.visible = true;
+                        }
+                        if (model.bash !== undefined) {
+                            runButton.visible = true;
+                        }
+                            
+                    }
+                    
+                    onExited: {
+                        timer.running = true
+                        goButton.visible = false;
+                        runButton.visible = false;
+                    }
+                    
+                    Button {
+                        id: goButton
+                        text: 'Go'
+                        anchors.right: parent.right
+                        visible: false
+                        
+                        onClicked: {
+                            if (model.href !== undefined) {
+                                executable.exec('xdg-open '+model.href);
+                            }
+                        }
+                    }
+                    
+                    Button {
+                        id: runButton
+                        text: 'Run'
+                        anchors.right: goButton.visible?goButton.left:parent.right
+                        anchors.rightMargin: 5
+                        visible: false
+                        
+                        onClicked: {
+                            if (model.bash !== undefined) {
+                                executable.exec(model.bash);
+                            }
+                        }
+                    }                    
                 }
             }
             
