@@ -10,6 +10,7 @@ Row {
     anchors.left: parent.left
     anchors.right: parent.right
     
+    height: label.implicitHeight + 20
     property bool buttonHidingDelay: false
     
     Layout.preferredWidth: label.implicitWidth
@@ -65,6 +66,8 @@ Row {
     PlasmaCore.IconItem {
         id: icon
         visible: false
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
         function update() {
             var item = getCurrentItem();
             source = (item.iconName !== 'undefined')? item.iconName: null
@@ -76,47 +79,50 @@ Row {
         }
     }
     
-PlasmaComponents.Label {
-    id: label
-    text: 'starting...'
-    
-    property var defaultFontFamily;
-    property var defaultFontSize;
-    Component.onCompleted: {
-        defaultFontFamily = font.family;
-        defaultFontSize = font.pointSize;
-        update();
-        rotationTimer.running = true
-    }
-                
-
-    function update() {
-        var item = getCurrentItem();
-        if (item !== null) {
-            text = item.title;
-            if (item.font !== undefined) {
-                font.family = item.font;
-            } else {
-                font.family = defaultFontFamily;
-            }
-            if (item.size !== undefined) {
-                font.pointSize = item.size;
-            } else {
-                font.pointSize = defaultFontSize;
-            }
-        } else {
-            text = 'starting...';
+    PlasmaComponents.Label {
+        id: label
+        text: 'starting...'
+        
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        
+        property var defaultFontFamily;
+        property var defaultFontSize;
+        Component.onCompleted: {
+            defaultFontFamily = font.family;
+            defaultFontSize = font.pointSize;
+            update();
+            rotationTimer.running = true
         }
-        mousearea.item = item;
-    }
-    
-    ItemTextMouseArea {
-        id: mousearea
-        buttonHidingDelay: control.buttonHidingDelay
-    }
-}
+                    
 
-Connections {
+        function update() {
+            var item = getCurrentItem();
+            if (item !== null) {
+                text = item.title;
+                if (item.font !== undefined) {
+                    font.family = item.font;
+                } else {
+                    font.family = defaultFontFamily;
+                }
+                if (item.size !== undefined) {
+                    font.pointSize = item.size;
+                } else {
+                    font.pointSize = defaultFontSize;
+                }
+            } else {
+                text = 'starting...';
+            }
+            mousearea.item = item;
+        }
+        
+        ItemTextMouseArea {
+            id: mousearea
+            buttonHidingDelay: control.buttonHidingDelay
+        }
+    }
+
+    Connections {
         target: executable
         onExited: {
             if (sourceName === plasmoid.configuration.command) {                    

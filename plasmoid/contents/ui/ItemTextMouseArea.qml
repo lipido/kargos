@@ -71,22 +71,27 @@ MouseArea {
     Button {
         id: goButton
         text: 'Go'
+
         anchors.right: parent.right
+        anchors.verticalCenter: parent.verticalCenter
         visible: false
+        
         onClicked: {
             if (item !== null && item.href !== undefined) {
                 executable.exec('xdg-open '+item.href);
             }
         }
-        
     }
     
     Button {
         id: runButton
         text: 'Run'
+
         anchors.right: goButton.visible? goButton.left: parent.right
         anchors.rightMargin: goButton.visible? 5: 0
+        anchors.verticalCenter: parent.verticalCenter
         visible: false
+        
         onClicked: {
             if (item !== null && item.bash !== undefined) {
                 executable.exec(item.bash);
