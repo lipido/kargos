@@ -9,6 +9,7 @@ Item {
     id: fullRoot
     
     Layout.preferredWidth: plasmoid.configuration.width
+    Layout.preferredHeight: plasmoid.configuration.height
     
     ListModel {
         id: kargosModel
