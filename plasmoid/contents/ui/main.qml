@@ -77,7 +77,7 @@ Item {
             attributesToken.split(" ").forEach(function(attribute_value) {
                 
                 if (attribute_value.indexOf('=')!=-1) {
-                    parsedObject[attribute_value.split('=')[0]] = attribute_value.split('=')[1];
+                    parsedObject[attribute_value.split('=')[0]] = attribute_value.substring(attribute_value.indexOf('=') + 1);
                 }
             });
         }
