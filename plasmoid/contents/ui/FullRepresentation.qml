@@ -90,8 +90,6 @@ Item {
                     if (typeof model.imageHeight !== 'undefined') {
                         image.sourceSize.height = model.imageHeight
                     }
-                    
-                        
             }
             
             PlasmaComponents.Label {

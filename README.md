@@ -21,6 +21,7 @@ custom plasmoids.
 - "imageURL" attribute (**non BitBar, kargos only**). A URL for the image.
 - "imageWidth", "imageHeight" attributes (**non BitBar, kargos only**). Max size for
   the image. If only one is provided, aspect ratio is preserved.
+- "terminal" attribute.
 - HTML support. Only the subset [supported by QML](http://doc.qt.io/qt-5/richtext-html-subset.html).
 - Interval detection on the command filename. A custom interval option is available.
 

@@ -94,7 +94,11 @@ MouseArea {
         
         onClicked: {
             if (item !== null && item.bash !== undefined) {
-                executable.exec(item.bash);
+                if (item.terminal !== undefined && item.terminal === 'true') {
+                    executable.exec('konsole --noclose -e '+item.bash);
+                } else {
+                    executable.exec(item.bash);
+                }
             }
         }
     }
