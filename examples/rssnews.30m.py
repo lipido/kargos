@@ -8,14 +8,16 @@ import xml.etree.ElementTree as ET
 reload(sys)  # Reload does the trick!
 sys.setdefaultencoding('UTF8')
 
-urls = [ 
-	'https://dot.kde.org/rss.xml'
+urls = [
+    # (url,icon). icon maybe empty string
+    ('https://dot.kde.org/rss.xml', 'https://dot.kde.org/sites/all/themes/neverland/logo.png'),
+    ('https://dot.kde.org/rss.xml', '')
 ]
 
 
 print "---"
 print "Refresh|refresh=true"
-for url in urls:
+for (url, icon) in urls:
     
     response = urllib2.urlopen(url)
     html = response.read()
@@ -24,9 +26,14 @@ for url in urls:
     root = ET.fromstring(html)
 
 
-    for country in root.findall('.//item'):
-        title = country.find('title').text
-        link = country.find('link').text
-        print title.replace('|', '/') + '| iconName=application-rss+xml dropdown=false href=' + link
-        print title.replace('|', '/') + '| iconName=application-rss+xml href=' + link
+    for item in root.findall('.//item'):
+        title = item.find('title').text
+        link = item.find('link').text
+        line = title.replace('|', '/') + '| href=' + link
+        if (icon !=None and icon != ''):
+            line+=' imageWidth=22 imageURL='+icon
+        else:
+            line+=' iconName=application-rss+xml'
+        print line
+        print line + ' dropdown=false'
 

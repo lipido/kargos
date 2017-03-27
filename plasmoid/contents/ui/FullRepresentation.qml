@@ -99,8 +99,8 @@ Item {
                 text: fullRoot.createTitleText(model);
                 wrapMode: Text.WordWrap
                 width: fullRoot.width - arrow_icon.width - image.width - 30//some right margin
-                anchors.top: row.top
-                anchors.bottom: row.bottom
+
+                anchors.verticalCenter: row.verticalCenter
 
                 Component.onCompleted: {
                     if (typeof model.font !== 'undefined') {
