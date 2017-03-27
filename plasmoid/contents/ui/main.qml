@@ -30,7 +30,7 @@ Item {
     
     function update() {
         currentItemsInCommand = 0;
-        executable.exec(plasmoid.configuration.command);
+        commandResultsDS.exec(plasmoid.configuration.command);
         updateInterval();
     }
     
@@ -109,9 +109,9 @@ Item {
         return items;
     }
     
-    // Object to run commands
+    // DataSource for the user command execution results
     PlasmaCore.DataSource {
-        id: executable
+        id: commandResultsDS
         engine: "executable"
         connectedSources: []
         onNewData: {
@@ -127,15 +127,57 @@ Item {
 
     }
     
+    // Generic DataSource to execute internal kargo commands (like running bash 
+    // attribute or open the browser with href)
+    PlasmaCore.DataSource {
+        id: executable
+        engine: "executable"
+        connectedSources: []
+        property var callbacks: ({})
+        onNewData: {
+            var stdout = data["stdout"]
+            
+            if (callbacks[sourceName] !== undefined) {
+                callbacks[sourceName](stdout);
+            }
+            
+            exited(sourceName, stdout)
+            disconnectSource(sourceName) // cmd finished
+        }
+        
+        function exec(cmd, onNewDataCallback) {
+            if (onNewDataCallback !== undefined){
+                callbacks[cmd] = onNewDataCallback
+            }
+            connectSource(cmd)
+                    
+        }
+        signal exited(string sourceName, string stdout)
+
+    }
+    
+    property var imagesIndex: ({})
+    
+    function createImageFile(base64, callback) {
+            var filename = imagesIndex[base64];
+            if (filename === undefined) {
+                executable.exec('/bin/bash -c \'file=$(mktemp /tmp/kargos.image.XXXXXX); echo "'+base64+'" | base64 -d > $file; echo -n $file\'', function(filename) {
+                    imagesIndex[base64] = filename;
+                    callback(filename);
+                });
+            } else {
+                callback(filename);
+            }
+            
+    }
+    
     Connections {
-        target: executable
+        target: commandResultsDS
         onExited: {
-                if (sourceName === plasmoid.configuration.command) {
-                    currentItemsInCommand = parseItems(stdout).length
-                    if (stdout.indexOf('---') === -1) {
-                        plasmoid.expanded = false
-                    }
-                }
+            currentItemsInCommand = parseItems(stdout).length
+            if (stdout.indexOf('---') === -1) {
+                plasmoid.expanded = false
+            }
         }
     }
     

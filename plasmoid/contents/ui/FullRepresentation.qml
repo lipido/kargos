@@ -41,7 +41,6 @@ Item {
             } else {
                 return null;
             }
-          //return component.createObject(fullRoot);
 
         }
         
@@ -49,25 +48,47 @@ Item {
             id: row
             height: (typeof category === 'undefined' || (fullRoot.categories[category].visible)) ? row.visibleHeight: 0
             visible: (typeof category === 'undefined') ? true : (fullRoot.categories[category].visible)
-            property int visibleHeight: itemLabel.height + 10
+            property int visibleHeight: Math.max(itemLabel.height, image.height) + 10
             
             
             PlasmaCore.IconItem {
                 source: (typeof iconName !== 'undefined')? iconName: null
             }
             
+            Image {
+                id: image
+            }
+            
             Component.onCompleted: {
                     if (typeof category !== 'undefined') {
                         fullRoot.categories[category].rows.push(row);
                     }
+                    
+                    if (typeof model.image !== 'undefined') {
+                        createImageFile(model.image, function(filename) {
+                            image.source = filename;
+                        });
+                    }
+                    
+                    if (typeof model.imageURL !== 'undefined') {
+                        image.source = model.imageURL;
+                    }
+                    
+                    if (typeof model.imageWidth !== 'undefined') {
+                                image.sourceSize.width = model.imageWidth
+                    }
+                    
+                    if (typeof model.imageHeight !== 'undefined') {
+                        image.sourceSize.height = model.imageHeight
+                    }
+                        
             }
             
             PlasmaComponents.Label {
                 id: itemLabel
                 text: fullRoot.createTitleText(model);
                 wrapMode: Text.WordWrap
-                width: fullRoot.width - arrow_icon.width - 30//some right margin
-                
+                width: fullRoot.width - arrow_icon.width - image.width - 30//some right margin
                 Component.onCompleted: {
                     if (typeof model.font !== 'undefined') {
                         font.family = model.font;
@@ -105,11 +126,9 @@ Item {
     }
     
     Connections {
-        target: executable
+        target: commandResultsDS
         onExited: {
-                if (sourceName === plasmoid.configuration.command) {
-                    update(stdout);
-                }
+                update(stdout);
         }
     }
     

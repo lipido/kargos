@@ -123,11 +123,9 @@ Row {
     }
 
     Connections {
-        target: executable
+        target: commandResultsDS
         onExited: {
-            if (sourceName === plasmoid.configuration.command) {                    
                 control.update(stdout);
-            }
         }
     }
     
