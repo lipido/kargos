@@ -96,7 +96,7 @@ Item {
                 id: itemLabel
                 text: fullRoot.createTitleText(model);
                 wrapMode: Text.WordWrap
-                width: fullRoot.width - arrow_icon.width - image.width - 30//some right margin
+                width: fullRoot.width - icon.width - arrow_icon.width - image.width - 30//some right margin
 
                 anchors.verticalCenter: row.verticalCenter
 
