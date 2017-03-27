@@ -22,6 +22,13 @@ Row {
         return (rotatingItems.length > 0 && currentMessage != -1) ? rotatingItems[currentMessage] : null;
     }
     
+    function updateItems(){
+        image.update();
+        label.update();
+        icon.update();
+        mousearea.reset();
+    }
+
     function update(stdout) {
         
         var beforeSeparator = true;
@@ -57,9 +64,7 @@ Row {
         if (plasmoid.configuration.command == '') {
             label.text = 'No command configured. Go to settings...';
         } else {
-            image.update();
-            label.update();
-            icon.update();
+            updateItems();
         }
         
     }
@@ -104,7 +109,7 @@ Row {
                 }
 
                 if (item.imageWidth !== undefined) {
-                        image.sourceSize.width = item.imageWidth
+                    image.sourceSize.width = item.imageWidth
                 }
 
                 if (item.imageHeight !== undefined) {
@@ -183,8 +188,7 @@ Row {
                 control.currentMessage = (control.currentMessage + 1) % control.rotatingItems.length;
                 
             }
-            label.update();
-            mousearea.reset();
+            updateItems();
         }
     }
 }
