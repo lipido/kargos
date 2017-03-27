@@ -42,7 +42,7 @@ standard, which is very simple. To create a plugin, all you have to do is to cre
 an executable program (in any language) that produces standard output following
 an [specific format](https://github.com/matryer/bitbar#plugin-api).
 
-For example, this is the `kargos_plugin.1s.sh` file (1s means that the plasmoid will re-render
+For example, this is the `examples/kargos_plugin.1s.sh` file (1s means that the plasmoid will re-render
 every 1 second):
 
 ```bash

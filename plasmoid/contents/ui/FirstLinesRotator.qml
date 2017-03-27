@@ -70,7 +70,7 @@ Row {
         anchors.bottom: parent.bottom
         function update() {
             var item = getCurrentItem();
-            source = (item.iconName !== 'undefined')? item.iconName: null
+            source = (item.iconName !== undefined)? item.iconName: null
             if (source == null) {
                 visible = false;
             } else {
