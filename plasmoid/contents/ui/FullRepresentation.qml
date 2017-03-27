@@ -130,6 +130,18 @@ Item {
                        
                        fullRoot.categories = newState;
                     }
+
+                    hoverEnabled: true
+
+                    onEntered: {
+                        // avoid flikering on each update
+                        timer.running = false; 
+                    }
+
+                    onExited: {
+                        // avoid flikering on each update
+                        timer.running = true; 
+                    }
                 }
             }  
         }

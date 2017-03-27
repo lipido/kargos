@@ -168,6 +168,14 @@ Row {
         ItemTextMouseArea {
             id: mousearea
             buttonHidingDelay: control.buttonHidingDelay
+            
+            onEntered: {
+                rotationTimer.running = false;
+            }
+            
+            onExited: {
+                rotationTimer.running = true;
+            }
         }
     }
 

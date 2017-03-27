@@ -33,15 +33,14 @@ MouseArea {
             runButton.visible = true;
             
             // avoid buttons to disappear on each update
-            timer.running = false; 
+            timer.running = false;
         }
-        
-        
     }
     
     onExited: {
         if (buttonHidingDelay) buttonHidder.restart();
-        else hideButtons()
+        else hideButtons();
+
         timer.running = true;
     }
     
