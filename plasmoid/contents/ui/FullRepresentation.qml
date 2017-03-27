@@ -31,7 +31,7 @@ Item {
         id: listView
         anchors.fill: parent
         model: kargosModel
-        
+        spacing: 4
         header: createHeader();
         
         function createHeader() {
@@ -45,18 +45,27 @@ Item {
         }
         
         delegate: Row {
+            
             id: row
             height: (typeof category === 'undefined' || (fullRoot.categories[category].visible)) ? row.visibleHeight: 0
             visible: (typeof category === 'undefined') ? true : (fullRoot.categories[category].visible)
-            property int visibleHeight: Math.max(itemLabel.height, image.height) + 10
-            
+            spacing: 2
             
             PlasmaCore.IconItem {
-                source: (typeof iconName !== 'undefined')? iconName: null
+                id: icon
+                source: (typeof iconName !== 'undefined')? iconName: ''
+                anchors.verticalCenter: row.verticalCenter
+                
+                Component.onCompleted: {
+                    if (typeof iconName === 'undefined') {
+                        icon.width = 0
+                    }
+                }
             }
             
             Image {
                 id: image
+                anchors.verticalCenter: row.verticalCenter
             }
             
             Component.onCompleted: {
@@ -75,12 +84,13 @@ Item {
                     }
                     
                     if (typeof model.imageWidth !== 'undefined') {
-                                image.sourceSize.width = model.imageWidth
+                        image.sourceSize.width = model.imageWidth
                     }
                     
                     if (typeof model.imageHeight !== 'undefined') {
                         image.sourceSize.height = model.imageHeight
                     }
+                    
                         
             }
             
@@ -89,6 +99,9 @@ Item {
                 text: fullRoot.createTitleText(model);
                 wrapMode: Text.WordWrap
                 width: fullRoot.width - arrow_icon.width - image.width - 30//some right margin
+                anchors.top: row.top
+                anchors.bottom: row.bottom
+
                 Component.onCompleted: {
                     if (typeof model.font !== 'undefined') {
                         font.family = model.font;
@@ -109,7 +122,6 @@ Item {
                 id: arrow_icon
                 source: (fullRoot.categories[model.title] !== undefined && fullRoot.categories[model.title].visible) ? 'arrow-down': 'arrow-up'
                 visible: (typeof model.category === 'undefined' && fullRoot.categories[model.title] !== undefined && fullRoot.categories[model.title].items.length > 0) ? true:false
-                
                 MouseArea {
                     cursorShape: Qt.PointingHandCursor
                     anchors.fill: parent

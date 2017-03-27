@@ -17,8 +17,8 @@ custom plasmoids.
 - "iconName" attribute (it should be a valid KDE icon name)
 - "font" attribute.
 - "dropdown" attribute.
-- "image" attribute (base64 encoded image). By now, only in lines after '---'.
-- "imageURL" attribute (**non BitBar, kargos only**). A URL for the image. By now, only in lines after '---'.
+- "image" attribute (base64 encoded image).
+- "imageURL" attribute (**non BitBar, kargos only**). A URL for the image.
 - "imageWidth", "imageHeight" attributes (**non BitBar, kargos only**). Max size for
   the image. If only one is provided, aspect ratio is preserved.
 - HTML support. Only the subset [supported by QML](http://doc.qt.io/qt-5/richtext-html-subset.html).

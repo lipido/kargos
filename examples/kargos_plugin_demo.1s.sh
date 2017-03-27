@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "Rotating item 1 $(date +\"%T\") (href, icon) |iconName=dialog-ok href=http://www.google.com"
-echo "Rotating item 2 $(date +\"%T\") (bash) | bash=ls"
+echo "Rotating item 2 $(date +\"%T\") (bash, imageURL) | bash=ls imageURL=http://doc.qt.io/qt-5/images/declarative-qtlogo.png"
 echo "Rotating item 3 $(date +\"%T\") (bash, icon, font, href) | iconName=dialog-cancel bash=ls font=serif href=http://www.google.com"
 echo "Rotating item 4 $(date +\"%T\") (font, size) | size=14 font=serif"
 echo "---"

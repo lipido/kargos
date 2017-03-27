@@ -6,7 +6,7 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 Row {
     id: control
-    
+    spacing: 2
     anchors.left: parent.left
     anchors.right: parent.right
     
@@ -57,6 +57,7 @@ Row {
         if (plasmoid.configuration.command == '') {
             label.text = 'No command configured. Go to settings...';
         } else {
+            image.update();
             label.update();
             icon.update();
         }
@@ -81,6 +82,47 @@ Row {
         }
     }
     
+    Image {
+        id: image
+        fillMode: Image.PreserveAspectFit
+        anchors.top: control.top
+        anchors.bottom: control.bottom
+        anchors.topMargin: 2
+        anchors.bottomMargin: 2
+        
+        function update() {
+            var item = getCurrentItem();
+            if (item !== null) {
+                if (item.image !== undefined) {
+                    createImageFile(item.image, function(filename) {
+                        image.source = filename;
+                    });
+                }
+
+                if (item.imageURL !== undefined) {
+                    image.source = item.imageURL;
+                }
+
+                if (item.imageWidth !== undefined) {
+                        image.sourceSize.width = item.imageWidth
+                }
+
+                if (item.imageHeight !== undefined) {
+                    image.sourceSize.height = item.imageHeight
+                }
+
+                // clear image
+                if (item.imageURL === undefined && item.image === undefined) {
+                    image.source = '';
+                }
+            }
+        }
+
+        Component.onCompleted: {
+            sourceSize.height = control.height
+        }
+    }
+
     PlasmaComponents.Label {
         id: label
         text: 'starting...'
