@@ -22,20 +22,30 @@ Item {
         return (plasmoid.formFactor == PlasmaCore.Types.Vertical || plasmoid.formFactor == PlasmaCore.Types.Horizontal);
     }
 
+    property var command: plasmoid.configuration.command
+    
+    onCommandChanged: {
+        update();
+    }
+
     Component.onCompleted: {        
         timer.running = true;     
-        plasmoid.addEventListener('ConfigChanged', update);
     }
     
-    
     function update() {
+        if (command === '') {
+            plasmoid.setConfigurationRequired(true, 'You need to provide a command');
+            
+        } else {
+            plasmoid.setConfigurationRequired(false);
+        }
         currentItemsInCommand = 0;
-        commandResultsDS.exec(plasmoid.configuration.command);
+        commandResultsDS.exec(command);
         updateInterval();
     }
     
     function updateInterval() {
-        var commandTokens = plasmoid.configuration.command.split('.');
+        var commandTokens = command.split('.');
             
         if (commandTokens.length >= 3) {
             var intervalToken = commandTokens[commandTokens.length - 2]; //ex: 1s
