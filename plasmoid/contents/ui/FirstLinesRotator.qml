@@ -176,6 +176,14 @@ Row {
             onExited: {
                 rotationTimer.running = true;
             }
+
+            onWheel: {
+                if (wheel.angleDelta.y < 0) {
+                    rotateNext();
+                } else if (wheel.angleDelta.y > 0) {
+                    rotatePrev();
+                }
+            }
         }
     }
 
@@ -186,17 +194,30 @@ Row {
         }
     }
     
+    function rotateNext() {
+        if (control.rotatingItems.length > 0) {
+            control.currentMessage = (control.currentMessage + 1) % control.rotatingItems.length;
+            updateItems();
+        }
+    }
+
+    function rotatePrev() {
+        if (control.rotatingItems.length > 0) {
+            control.currentMessage = control.currentMessage - 1;
+            if (control.currentMessage == -1) {
+                control.currentMessage = control.rotatingItems.length - 1;
+            }
+            updateItems();
+        }
+    }
+
     Timer {
         id: rotationTimer
         interval: plasmoid.configuration.rotation * 1000
         running: false
         repeat: true
         onTriggered: {
-            if (control.rotatingItems.length > 0) {
-                control.currentMessage = (control.currentMessage + 1) % control.rotatingItems.length;
-                
-            }
-            updateItems();
+            rotateNext();
         }
     }
 }
