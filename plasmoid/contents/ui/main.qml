@@ -11,12 +11,13 @@ Item {
     id: root
     
     Plasmoid.preferredRepresentation: isConstrained() ? Plasmoid.compactRepresentation : Plasmoid.fullRepresentation
+    //Plasmoid.preferredRepresentation: Plasmoid.compactRepresentation
 
     Plasmoid.compactRepresentation: CompactRepresentation {}
     Plasmoid.fullRepresentation: FullRepresentation {}
     
     property int interval;    
-    property int currentItemsInCommand: -1;
+    property int dropdownItemsCount: -1;
     
     function isConstrained() {
         return (plasmoid.formFactor == PlasmaCore.Types.Vertical || plasmoid.formFactor == PlasmaCore.Types.Horizontal);
@@ -39,7 +40,7 @@ Item {
         } else {
             plasmoid.setConfigurationRequired(false);
         }
-        currentItemsInCommand = 0;
+        //dropdownItemsCount = 0;
         commandResultsDS.exec(command);
         updateInterval();
     }
@@ -81,7 +82,6 @@ Item {
                 }
             });
         }
-        
         
         if (parsedObject.title.match(/^--/)) {
             parsedObject.title = parsedObject.title.substring(2).trim();
@@ -184,7 +184,11 @@ Item {
     Connections {
         target: commandResultsDS
         onExited: {
-            currentItemsInCommand = parseItems(stdout).length
+            dropdownItemsCount = parseItems(stdout).filter(
+                function(item) {
+                    return item.dropdown === undefined || item.dropdown !== 'false'
+                }).length;
+                
             if (stdout.indexOf('---') === -1) {
                 plasmoid.expanded = false
             }

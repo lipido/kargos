@@ -9,24 +9,79 @@ Item {
     
     id: compactRoot
     
-    Layout.preferredWidth: rotator.implicitWidth
+    Layout.preferredWidth: rotator.implicitWidth + (dropdownButton.visible?dropdownButton.implicitWidth + 2 : 0)
+
+    property var mouseIsInside: false;
     
     MouseArea {
+        id: mouseArea
+        hoverEnabled: true
         anchors.fill : parent
+
+        onEntered: {
+            mouseIsInside = true;
+            mouseExitDelayer.stop();
+        }
+        onExited: {
+            mouseExitDelayer.restart();
+        }
         
-        onClicked: {
-            if (root.currentItemsInCommand > 0 && !plasmoid.expanded) {
-                plasmoid.expanded = true;            
-            } else if (plasmoid.expanded) {
-                plasmoid.expanded = false;
+        Timer {
+            id: mouseExitDelayer
+            interval: 1000
+            onTriggered: {
+                mouseIsInside = false;
             }
         }
-    }
-    
-    FirstLinesRotator {
-        id: rotator
-        buttonHidingDelay: true
-        anchors.fill:parent
+
+        FirstLinesRotator {
+            id: rotator
+            buttonHidingDelay: true
+            anchors.verticalCenter: parent.verticalCenter
+        }
+
+        Button {
+            id: dropdownButton
+            checkable: plasmoid.expanded
+            checked: plasmoid.expanded
+            iconName: {
+                if (plasmoid.location == PlasmaCore.Types.BottomEdge) {
+                    return plasmoid.expanded? "arrow-down": "arrow-up";
+                } else if (plasmoid.location == PlasmaCore.Types.TopEdge) {
+                    return plasmoid.expanded? "arrow-up": "arrow-down";
+                } else if (plasmoid.location == PlasmaCore.Types.LeftEdge) {
+                    return plasmoid.expanded? "arrow-left": "arrow-right";
+                } else {
+                    return plasmoid.expanded? "arrow-right": "arrow-left";
+                }
+            }
+
+            anchors.verticalCenter: parent.verticalCenter
+            visible: root.dropdownItemsCount > 0 && (mouseIsInside || plasmoid.expanded)
+            width: visible? dropdownButton.implicitWidth:0
+            anchors.right: parent.right
+            anchors.leftMargin: 2
+
+            onClicked: {
+                if (!plasmoid.expanded) {
+                    plasmoid.expanded = true;
+                    mouseExitDelayer.stop();
+                } else if (plasmoid.expanded) {
+                    plasmoid.expanded = false;
+                }
+            }
+
+            MouseArea {
+                id: buttonArea
+                hoverEnabled: true
+                onEntered: {
+                    console.log('hola2')
+                }
+                onExited: {
+                    console.log('adios2')
+                }
+            }
+        }
     }
 }
 
