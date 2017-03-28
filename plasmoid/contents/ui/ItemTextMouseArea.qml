@@ -10,7 +10,7 @@ MouseArea {
     anchors.fill: parent
     propagateComposedEvents: true
     hoverEnabled: true
-    cursorShape: (item !==null && item.refresh == 'true') ? Qt.PointingHandCursor: Qt.ArrowCursor
+    cursorShape: (item !==null && (item.refresh == 'true' || item.onclick == 'href' || item.onclick == 'bash')) ? Qt.PointingHandCursor: Qt.ArrowCursor
     
     property var item: null;
     property bool buttonHidingDelay: false
@@ -19,18 +19,31 @@ MouseArea {
         if (item !== null && item.refresh == 'true') {
             root.update();
         }
+
+        if (item !== null && item.href !== undefined && item.onclick == 'href') {
+            executable.exec('xdg-open '+item.href);
+        }
+
+        if (item !== null && item.bash !== undefined && item.onclick == 'bash') {
+            if (item.terminal !== undefined && item.terminal === 'true') {
+                executable.exec('konsole --noclose -e '+item.bash);
+            } else {
+                executable.exec(item.bash);
+            }
+        }
+
         mouse.accepted = false
     }
             
     onEntered: {
         if (buttonHidingDelay) buttonHidder.stop();
-        if (item !== null && item.href !== undefined) {
+        if (item !== null && item.href !== undefined && item.onclick != 'href') {
             goButton.visible = true;
             
             // avoid buttons to disappear on each update
             timer.running = false; 
         }
-        if (item !== null && item.bash !== undefined) {
+        if (item !== null && item.bash !== undefined && item.onclick != 'bash') {
             runButton.visible = true;
             
             // avoid buttons to disappear on each update
