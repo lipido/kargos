@@ -31,7 +31,6 @@ Item {
         id: listView
         anchors.fill: parent
         model: kargosModel
-        spacing: 4
         header: createHeader();
         
         function createHeader() {
@@ -69,27 +68,27 @@ Item {
             }
             
             Component.onCompleted: {
-                    if (typeof category !== 'undefined') {
-                        fullRoot.categories[category].rows.push(row);
-                    }
-                    
-                    if (typeof model.image !== 'undefined') {
-                        createImageFile(model.image, function(filename) {
-                            image.source = filename;
-                        });
-                    }
-                    
-                    if (typeof model.imageURL !== 'undefined') {
-                        image.source = model.imageURL;
-                    }
-                    
-                    if (typeof model.imageWidth !== 'undefined') {
-                        image.sourceSize.width = model.imageWidth
-                    }
-                    
-                    if (typeof model.imageHeight !== 'undefined') {
-                        image.sourceSize.height = model.imageHeight
-                    }
+                if (typeof category !== 'undefined') {
+                    fullRoot.categories[category].rows.push(row);
+                }
+
+                if (typeof model.image !== 'undefined') {
+                    createImageFile(model.image, function(filename) {
+                        image.source = filename;
+                    });
+                }
+
+                if (typeof model.imageURL !== 'undefined') {
+                    image.source = model.imageURL;
+                }
+
+                if (typeof model.imageWidth !== 'undefined') {
+                    image.sourceSize.width = model.imageWidth
+                }
+
+                if (typeof model.imageHeight !== 'undefined') {
+                    image.sourceSize.height = model.imageHeight
+                }
             }
             
             PlasmaComponents.Label {
