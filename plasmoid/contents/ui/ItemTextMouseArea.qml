@@ -23,6 +23,7 @@ MouseArea {
     }
             
     onEntered: {
+        if (buttonHidingDelay) buttonHidder.stop();
         if (item !== null && item.href !== undefined) {
             goButton.visible = true;
             
