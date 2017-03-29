@@ -19,10 +19,12 @@ Item {
         anchors.fill : parent
 
         onEntered: {
+            dropdownButton.checked = plasmoid.expanded; //this seems redundant, but fixes some lost updates
             mouseIsInside = true;
             mouseExitDelayer.stop();
         }
         onExited: {
+            dropdownButton.checked = plasmoid.expanded; //this seems redundant, but fixes some lost updates
             mouseExitDelayer.restart();
         }
         
@@ -42,7 +44,7 @@ Item {
 
         Button {
             id: dropdownButton
-            checkable: plasmoid.expanded
+            checkable: true
             checked: plasmoid.expanded
             iconName: {
                 if (plasmoid.location == PlasmaCore.Types.BottomEdge) {
@@ -65,9 +67,11 @@ Item {
             onClicked: {
                 if (!plasmoid.expanded) {
                     plasmoid.expanded = true;
+                    dropdownButton.checked = true; //this seems redundant, but fixes some lost updates
                     mouseExitDelayer.stop();
                 } else if (plasmoid.expanded) {
                     plasmoid.expanded = false;
+                    dropdownButton.checked = false; //this seems redundant, but fixes some lost updates
                 }
             }
 
