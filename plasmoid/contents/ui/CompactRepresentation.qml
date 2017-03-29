@@ -59,7 +59,7 @@ Item {
             }
 
             anchors.verticalCenter: parent.verticalCenter
-            visible: root.dropdownItemsCount > 0 && (mouseIsInside || plasmoid.expanded)
+            visible: root.dropdownItemsCount > 0 && (mouseIsInside || plasmoid.expanded || plasmoid.configuration.dropdownvisible)
             width: visible? dropdownButton.implicitWidth:0
             anchors.right: parent.right
             anchors.leftMargin: 2
@@ -72,17 +72,6 @@ Item {
                 } else if (plasmoid.expanded) {
                     plasmoid.expanded = false;
                     dropdownButton.checked = false; //this seems redundant, but fixes some lost updates
-                }
-            }
-
-            MouseArea {
-                id: buttonArea
-                hoverEnabled: true
-                onEntered: {
-                    console.log('hola2')
-                }
-                onExited: {
-                    console.log('adios2')
                 }
             }
         }

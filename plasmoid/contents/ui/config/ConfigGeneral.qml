@@ -10,8 +10,6 @@ ConfigPage {
     
     property alias cfg_command: command.text
     property alias cfg_interval: interval.value
-    property alias cfg_width: width.value
-    property alias cfg_height: height.value
     property alias cfg_rotation: rotation.value
     
     ConfigSection {
@@ -31,27 +29,6 @@ ConfigPage {
             Layout.fillWidth: true            
         }
     }
-    
-    ConfigSection {
-        label: i18n("Preferred width in px")
-        
-        SpinBox {
-            id: width
-            Layout.fillWidth: true        
-            maximumValue: 10000
-        }
-    }
-    
-    ConfigSection {
-        label: i18n("Preferred height in px")
-        
-        SpinBox {
-            id: height
-            Layout.fillWidth: true        
-            maximumValue: 10000
-        }
-    }
-    
     
     ConfigSection {
         label: i18n("Rotation delay in seconds (rotation interval of the lines before the ---)")
