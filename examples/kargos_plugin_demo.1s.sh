@@ -4,6 +4,7 @@ echo "Rotating item 2 (qt) $(date +\"%T\") (bash, imageURL) | bash=ls imageURL=h
 echo "Rotating item 2bis (kde) $(date +\"%T\") (bash, imageURL) | bash=ls imageURL=https://dot.kde.org/sites/all/themes/neverland/logo.png"
 echo "Rotating item 3 $(date +\"%T\") (bash, icon, font, href, onclick=bash) | iconName=dialog-cancel bash=ls font=serif href=http://www.google.com onclick=bash"
 echo "Rotating item 4 $(date +\"%T\") (font, size) | size=14 font=serif"
+echo "en | href=http://www.google.com bash=ls"
 echo "---"
 echo "Dropdown item 1 $(date +\"%T\") (href, icon, image) |iconName=dialog-ok href=http://www.google.com image=$(wget -O - http://doc.qt.io/qt-5/images/declarative-qtlogo.png | base64 -w0)"
 echo "Dropdown item 2 $(date +\"%T\") (bash, imageURL) | bash=ls imageURL=http://doc.qt.io/qt-5/images/declarative-qtlogo.png"

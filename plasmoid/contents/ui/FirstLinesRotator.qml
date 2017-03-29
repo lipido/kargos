@@ -135,8 +135,12 @@ Row {
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         
+        
         property var defaultFontFamily;
         property var defaultFontSize;
+        
+        readonly property bool labelTooSmall: label.implicitWidth < 100
+        
         Component.onCompleted: {
             defaultFontFamily = font.family;
             defaultFontSize = font.pointSize;
@@ -163,11 +167,28 @@ Row {
                 text = 'starting...';
             }
             mousearea.item = item;
+            
+            if (labelTooSmall) {
+                mousearea.goButton.iconName='edit-link';
+                mousearea.goButton.text='';
+                mousearea.runButton.iconName='system-run';
+                mousearea.runButton.text='';
+            } else {
+                mousearea.goButton.iconName='';
+                mousearea.goButton.text='Go';
+                mousearea.runButton.iconName='';
+                mousearea.runButton.text='Run';
+            }
+            
+            width = mousearea.buttonsAlwaysVisible ? label.implicitWidth + (mousearea.runButton.visible ? mousearea.runButton.implicitWidth : 0) + (mousearea.goButton.visible ? mousearea.goButton.implicitWidth : 0) + 10: label.implicitWidth
+            
         }
         
         ItemTextMouseArea {
             id: mousearea
             buttonHidingDelay: control.buttonHidingDelay
+            
+            buttonsAlwaysVisible: label.labelTooSmall
             
             onEntered: {
                 rotationTimer.running = false;

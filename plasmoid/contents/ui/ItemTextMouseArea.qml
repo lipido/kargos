@@ -15,16 +15,22 @@ MouseArea {
     property var item: null;
     property bool buttonHidingDelay: false
     
+    property alias goButton: goButton
+    property alias runButton: runButton
+    
+    property bool buttonsAlwaysVisible: false
+    property bool buttonsShouldHide: true
+    
     onClicked: {
         if (item !== null && item.refresh == 'true') {
             root.update();
         }
 
-        if (item !== null && item.href !== undefined && item.onclick == 'href') {
+        if (item !== null && item.href !== undefined && item.onclick === 'href') {
             executable.exec('xdg-open '+item.href);
         }
 
-        if (item !== null && item.bash !== undefined && item.onclick == 'bash') {
+        if (item !== null && item.bash !== undefined && item.onclick === 'bash') {
             if (item.terminal !== undefined && item.terminal === 'true') {
                 executable.exec('konsole --noclose -e '+item.bash);
             } else {
@@ -37,34 +43,31 @@ MouseArea {
             
     onEntered: {
         if (buttonHidingDelay) buttonHidder.stop();
-        if (item !== null && item.href !== undefined && item.onclick != 'href') {
-            goButton.visible = true;
-            
+        buttonsShouldHide = false;
+
+        if (goButton.visible || runButton.visible) {
             // avoid buttons to disappear on each update
             timer.running = false; 
-        }
-        if (item !== null && item.bash !== undefined && item.onclick != 'bash') {
-            runButton.visible = true;
-            
-            // avoid buttons to disappear on each update
-            timer.running = false;
         }
     }
     
     onExited: {
-        if (buttonHidingDelay) buttonHidder.restart();
-        else hideButtons();
+        if (!buttonsAlwaysVisible) {
+            if (buttonHidingDelay) buttonHidder.restart();
+            else hideButtons();
+        }
 
         timer.running = true;
     }
     
     function reset() {
-        hideButtons();
+        /*if (!buttonsAlwaysVisible) {
+            buttonsShouldHide = true
+        }*/
     }
 
     function hideButtons() {
-       goButton.visible = false;
-       runButton.visible = false;
+       buttonsShouldHide = true
     }
     
     // workaround. When the compact representation is used (kargos in a panel)
@@ -75,9 +78,9 @@ MouseArea {
     // capture the click event
     Timer {
         id: buttonHidder
-        interval: 1000
+        interval: 1000        
         onTriggered: {
-            hideButtons()
+            buttonsShouldHide = true
         }
     }
     
@@ -85,10 +88,11 @@ MouseArea {
         id: goButton
         text: 'Go'
 
+        visible: item !== null && (buttonsAlwaysVisible || !buttonsShouldHide) && (typeof item.href !== 'undefined') && (typeof item.onclick === 'undefined' || item.onclick !== 'href')
+
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
-        visible: false
-        
+
         onClicked: {
             if (item !== null && item.href !== undefined) {
                 executable.exec('xdg-open '+item.href);
@@ -100,11 +104,12 @@ MouseArea {
         id: runButton
         text: 'Run'
 
+        visible: item!==null && (buttonsAlwaysVisible  || !buttonsShouldHide) && (typeof item.bash !== 'undefined') && (typeof item.onclick === 'undefined' || item.onclick !== 'bash')
+
         anchors.right: goButton.visible? goButton.left: parent.right
         anchors.rightMargin: goButton.visible? 5: 0
         anchors.verticalCenter: parent.verticalCenter
-        visible: false
-        
+
         onClicked: {
             if (item !== null && item.bash !== undefined) {
                 if (item.terminal !== undefined && item.terminal === 'true') {

@@ -9,7 +9,7 @@ Item {
     
     id: compactRoot
     
-    Layout.preferredWidth: rotator.implicitWidth + (dropdownButton.visible?dropdownButton.implicitWidth + 2 : 0)
+    Layout.preferredWidth: rotator.implicitWidth + (dropdownButton.visible?dropdownButton.implicitWidth + 5 : 0)
 
     property var mouseIsInside: false;
     
