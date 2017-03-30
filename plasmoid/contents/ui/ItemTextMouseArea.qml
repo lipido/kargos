@@ -14,7 +14,7 @@ MouseArea {
 
     cursorShape: hasClickAction ? Qt.PointingHandCursor: Qt.ArrowCursor
 
-    property bool hasClickAction: item !==null && (item.refresh == 'true' || item.onclick == 'href' || item.onclick == 'bash')
+    property bool hasClickAction: isClickable(item)
 
     property var item: null;
     property bool buttonHidingDelay: false
@@ -26,21 +26,7 @@ MouseArea {
     readonly property alias runButton: runButton
 
     onClicked: {
-        if (item !== null && item.refresh == 'true') {
-            root.update();
-        }
-
-        if (item !== null && item.href !== undefined && item.onclick === 'href') {
-            executable.exec('xdg-open '+item.href);
-        }
-
-        if (item !== null && item.bash !== undefined && item.onclick === 'bash') {
-            if (item.terminal !== undefined && item.terminal === 'true') {
-                executable.exec('konsole --noclose -e '+item.bash);
-            } else {
-                executable.exec(item.bash);
-            }
-        }
+        root.doItemClick(item);
 
         mouse.accepted = false
     }

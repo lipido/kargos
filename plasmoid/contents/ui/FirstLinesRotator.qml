@@ -89,6 +89,17 @@ Row {
             } else {
                 visible = true;
             }
+            iconMouseArea.cursorShape = root.isClickable(item) ? Qt.PointingHandCursor: Qt.ArrowCursor;
+        }
+
+        MouseArea {
+            id: iconMouseArea
+            anchors.fill: parent
+
+            onClicked: {
+                var item = getCurrentItem();
+                root.doItemClick(item);
+            }
         }
     }
     
@@ -99,7 +110,7 @@ Row {
         anchors.bottom: control.bottom
         anchors.topMargin: 2
         anchors.bottomMargin: 2
-        
+
         function update() {
             var item = getCurrentItem();
             if (item !== null) {
@@ -125,11 +136,23 @@ Row {
                 if (item.imageURL === undefined && item.image === undefined) {
                     image.source = '';
                 }
+
+                imageMouseArea.cursorShape = root.isClickable(item) ? Qt.PointingHandCursor: Qt.ArrowCursor;
             }
         }
 
         Component.onCompleted: {
             sourceSize.height = control.height
+        }
+
+        MouseArea {
+            id: imageMouseArea
+            anchors.fill: parent
+
+            onClicked: {
+                var item = getCurrentItem();
+                root.doItemClick(item);
+            }
         }
     }
 

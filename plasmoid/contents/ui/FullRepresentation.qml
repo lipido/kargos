@@ -65,6 +65,14 @@ Item {
             Image {
                 id: image
                 anchors.verticalCenter: row.verticalCenter
+
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: root.isClickable(model) ? Qt.PointingHandCursor: Qt.ArrowCursor
+                    onClicked: {
+                        root.doItemClick(model);
+                    }
+                }
             }
             
             Component.onCompleted: {

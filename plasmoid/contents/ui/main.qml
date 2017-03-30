@@ -119,6 +119,29 @@ Item {
         return items;
     }
     
+    function doItemClick(item) {
+        if (item !== null && item.refresh == 'true') {
+            root.update();
+        }
+        
+        
+        if (item !== null && item.href !== undefined && item.onclick === 'href') {
+            executable.exec('xdg-open '+item.href);
+        }
+
+        if (item !== null && item.bash !== undefined && item.onclick === 'bash') {
+            if (item.terminal !== undefined && item.terminal === 'true') {
+                executable.exec('konsole --noclose -e '+item.bash);
+            } else {
+                executable.exec(item.bash);
+            }
+        }
+    }
+    
+    function isClickable(item) {
+        return item !==null && (item.refresh == 'true' || item.onclick == 'href' || item.onclick == 'bash');
+    }
+    
     // DataSource for the user command execution results
     PlasmaCore.DataSource {
         id: commandResultsDS
