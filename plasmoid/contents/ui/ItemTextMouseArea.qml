@@ -3,7 +3,7 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.1
 import org.kde.plasma.core 2.0 as PlasmaCore
-import QtQuick.Controls.Styles 1.4 as Styles
+
 
 MouseArea {
 
@@ -24,6 +24,8 @@ MouseArea {
 
     readonly property alias goButton: goButton
     readonly property alias runButton: runButton
+
+    property bool iconMode: false
 
     onClicked: {
         root.doItemClick(item);
@@ -74,16 +76,17 @@ MouseArea {
         }
     }
 
-
-    PlasmaComponents.Button {
+    IconifiableButton {
         id: goButton
+        iconMode: mousearea.iconMode
+
         text: 'Go'
         iconName: 'edit-link'
 
-        visible: item !== null && (buttonsAlwaysVisible || !buttonsShouldHide) && (typeof item.href !== 'undefined') && (typeof item.onclick === 'undefined' || item.onclick !== 'href')
-
         anchors.right: parent.right
         anchors.verticalCenter: parent.verticalCenter
+
+        visible: item !== null && (buttonsAlwaysVisible || !buttonsShouldHide) && (typeof item.href !== 'undefined') && (typeof item.onclick === 'undefined' || item.onclick !== 'href')
 
         onClicked: {
             if (item !== null && item.href !== undefined) {
@@ -91,17 +94,19 @@ MouseArea {
             }
         }
     }
-    
-    PlasmaComponents.Button {
-        id: runButton
-        text: 'Run'
-        iconName: 'system-run'
 
-        visible: item!==null && (buttonsAlwaysVisible  || !buttonsShouldHide) && (typeof item.bash !== 'undefined') && (typeof item.onclick === 'undefined' || item.onclick !== 'bash')
+    IconifiableButton {
+        id: runButton
+        iconMode: mousearea.iconMode
+
+        text: 'Run'
+        iconName: 'run-build'
 
         anchors.right: goButton.visible? goButton.left: parent.right
-        anchors.rightMargin: goButton.visible? 5: 0
+        anchors.rightMargin: goButton.visible? (mousearea.iconMode ? 0 : 5): 0
         anchors.verticalCenter: parent.verticalCenter
+
+        visible: item!==null && (buttonsAlwaysVisible  || !buttonsShouldHide) && (typeof item.bash !== 'undefined') && (typeof item.onclick === 'undefined' || item.onclick !== 'bash')
 
         onClicked: {
             if (item !== null && item.bash !== undefined) {

@@ -19,13 +19,11 @@ Item {
         anchors.fill : parent
 
         onEntered: {
-            dropdownButton.checked = plasmoid.expanded; //this seems redundant, but fixes some lost updates
             mouseIsInside = true;
             mouseExitDelayer.stop();
         }
 
         onExited: {
-            dropdownButton.checked = plasmoid.expanded; //this seems redundant, but fixes some lost updates
             mouseExitDelayer.restart();
         }
         
@@ -46,11 +44,9 @@ Item {
         function doDropdown() {
             if (!plasmoid.expanded) {
                 plasmoid.expanded = true;
-                dropdownButton.checked = true; //this seems redundant, but fixes some lost updates
                 mouseExitDelayer.stop();
             } else if (plasmoid.expanded) {
                 plasmoid.expanded = false;
-                dropdownButton.checked = false; //this seems redundant, but fixes some lost updates
             }
         }
 
@@ -60,29 +56,102 @@ Item {
             anchors.verticalCenter: parent.verticalCenter
         }
 
-        Button {
+        // Tooltip for arrow (taken from the systemtray plasmoid)
+        Item {
             id: dropdownButton
-            checkable: true
-            checked: plasmoid.expanded
-            iconName: {
-                if (plasmoid.location == PlasmaCore.Types.BottomEdge) {
-                    return plasmoid.expanded? "arrow-down": "arrow-up";
-                } else if (plasmoid.location == PlasmaCore.Types.TopEdge) {
-                    return plasmoid.expanded? "arrow-up": "arrow-down";
-                } else if (plasmoid.location == PlasmaCore.Types.LeftEdge) {
-                    return plasmoid.expanded? "arrow-left": "arrow-right";
-                } else {
-                    return plasmoid.expanded? "arrow-right": "arrow-left";
-                }
+
+            width: units.iconSizes.smallMedium
+            height: units.iconSizes.smallMedium
+
+            implicitWidth: units.iconSizes.smallMedium
+            implicitHeight: units.iconSizes.smallMedium
+
+            visible: root.dropdownItemsCount > 0 && (mouseIsInside || plasmoid.expanded || plasmoid.configuration.dropdownvisible)
+
+            anchors {
+                right: parent.right
+                verticalCenter: parent.verticalCenter
             }
 
-            anchors.verticalCenter: parent.verticalCenter
-            visible: root.dropdownItemsCount > 0 && (mouseIsInside || plasmoid.expanded || plasmoid.configuration.dropdownvisible)
-            width: visible? dropdownButton.implicitWidth:0
-            anchors.right: parent.right
+            MouseArea {
+                id: arrowMouseArea
+                anchors.fill: parent
+                onClicked: {
+                    mousearea.doDropdown()
+                }
 
-            onClicked: {
-                mousearea.doDropdown()
+                readonly property int arrowAnimationDuration: units.shortDuration * 3
+
+                PlasmaCore.Svg {
+                    id: arrowSvg
+                    imagePath: "widgets/arrows"
+                }
+
+                PlasmaCore.SvgItem {
+                    id: arrow
+
+                    anchors.centerIn: parent
+                    width: Math.min(parent.width, parent.height)
+                    height: width
+
+                    rotation: plasmoid.expanded ? 180 : 0
+                    Behavior on rotation {
+                        RotationAnimation {
+                            duration: arrowMouseArea.arrowAnimationDuration
+                        }
+                    }
+                    opacity: plasmoid.expanded ? 0 : 1
+                    Behavior on opacity {
+                        NumberAnimation {
+                            duration: arrowMouseArea.arrowAnimationDuration
+                        }
+                    }
+
+                    svg: arrowSvg
+                    elementId: {
+                        if (plasmoid.location == PlasmaCore.Types.BottomEdge) {
+                            return "up-arrow"
+                        } else if (plasmoid.location == PlasmaCore.Types.TopEdge) {
+                            return "down-arrow"
+                        } else if (plasmoid.location == PlasmaCore.Types.LeftEdge) {
+                            return "right-arrow"
+                        } else {
+                            return "left-arrow"
+                        }
+                    }
+                }
+
+                PlasmaCore.SvgItem {
+                    anchors.centerIn: parent
+                    width: arrow.width
+                    height: arrow.height
+
+                    rotation: plasmoid.expanded ? 0 : -180
+                    Behavior on rotation {
+                        RotationAnimation {
+                            duration: arrowMouseArea.arrowAnimationDuration
+                        }
+                    }
+                    opacity: plasmoid.expanded ? 1 : 0
+                    Behavior on opacity {
+                        NumberAnimation {
+                            duration: arrowMouseArea.arrowAnimationDuration
+                        }
+                    }
+
+                    svg: arrowSvg
+                    elementId: {
+                        if (plasmoid.location == PlasmaCore.Types.BottomEdge) {
+                            return "down-arrow"
+                        } else if (plasmoid.location == PlasmaCore.Types.TopEdge) {
+                            return "up-arrow"
+                        } else if (plasmoid.location == PlasmaCore.Types.LeftEdge) {
+                            return "left-arrow"
+                        } else {
+                            return "right-arrow"
+                        }
+                    }
+                }
             }
         }
 
@@ -91,6 +160,7 @@ Item {
             rotator.mousearea.goButton.text='';
             rotator.mousearea.runButton.text='';
             rotator.mousearea.buttonsAlwaysVisible = true
+            rotator.mousearea.iconMode = true
         }
     }
 }

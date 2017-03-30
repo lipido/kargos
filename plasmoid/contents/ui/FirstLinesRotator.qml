@@ -163,7 +163,6 @@ Row {
         anchors.top: parent.top
         anchors.bottom: parent.bottom
         
-        
         property var defaultFontFamily;
         property var defaultFontSize;
         
