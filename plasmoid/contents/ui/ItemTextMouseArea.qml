@@ -3,6 +3,7 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.1
 import org.kde.plasma.core 2.0 as PlasmaCore
+import QtQuick.Controls.Styles 1.4 as Styles
 
 MouseArea {
 
@@ -10,17 +11,20 @@ MouseArea {
     anchors.fill: parent
     propagateComposedEvents: true
     hoverEnabled: true
-    cursorShape: (item !==null && (item.refresh == 'true' || item.onclick == 'href' || item.onclick == 'bash')) ? Qt.PointingHandCursor: Qt.ArrowCursor
-    
+
+    cursorShape: hasClickAction ? Qt.PointingHandCursor: Qt.ArrowCursor
+
+    property bool hasClickAction: item !==null && (item.refresh == 'true' || item.onclick == 'href' || item.onclick == 'bash')
+
     property var item: null;
     property bool buttonHidingDelay: false
-    
-    property alias goButton: goButton
-    property alias runButton: runButton
-    
+
     property bool buttonsAlwaysVisible: false
     property bool buttonsShouldHide: true
-    
+
+    readonly property alias goButton: goButton
+    readonly property alias runButton: runButton
+
     onClicked: {
         if (item !== null && item.refresh == 'true') {
             root.update();
@@ -61,9 +65,9 @@ MouseArea {
     }
     
     function reset() {
-        /*if (!buttonsAlwaysVisible) {
+        if (!buttonsAlwaysVisible) {
             buttonsShouldHide = true
-        }*/
+        }
     }
 
     function hideButtons() {
@@ -83,10 +87,12 @@ MouseArea {
             buttonsShouldHide = true
         }
     }
-    
-    Button {
+
+
+    PlasmaComponents.Button {
         id: goButton
         text: 'Go'
+        iconName: 'edit-link'
 
         visible: item !== null && (buttonsAlwaysVisible || !buttonsShouldHide) && (typeof item.href !== 'undefined') && (typeof item.onclick === 'undefined' || item.onclick !== 'href')
 
@@ -100,9 +106,10 @@ MouseArea {
         }
     }
     
-    Button {
+    PlasmaComponents.Button {
         id: runButton
         text: 'Run'
+        iconName: 'system-run'
 
         visible: item!==null && (buttonsAlwaysVisible  || !buttonsShouldHide) && (typeof item.bash !== 'undefined') && (typeof item.onclick === 'undefined' || item.onclick !== 'bash')
 

@@ -14,7 +14,7 @@ Item {
     property var mouseIsInside: false;
     
     MouseArea {
-        id: mouseArea
+        id: mousearea
         hoverEnabled: true
         anchors.fill : parent
 
@@ -23,16 +23,34 @@ Item {
             mouseIsInside = true;
             mouseExitDelayer.stop();
         }
+
         onExited: {
             dropdownButton.checked = plasmoid.expanded; //this seems redundant, but fixes some lost updates
             mouseExitDelayer.restart();
         }
         
+        onClicked: {
+            if (!rotator.mousearea.hasClickAction) {
+                doDropdown();
+            }
+        }
+
         Timer {
             id: mouseExitDelayer
             interval: 1000
             onTriggered: {
                 mouseIsInside = false;
+            }
+        }
+
+        function doDropdown() {
+            if (!plasmoid.expanded) {
+                plasmoid.expanded = true;
+                dropdownButton.checked = true; //this seems redundant, but fixes some lost updates
+                mouseExitDelayer.stop();
+            } else if (plasmoid.expanded) {
+                plasmoid.expanded = false;
+                dropdownButton.checked = false; //this seems redundant, but fixes some lost updates
             }
         }
 
@@ -65,15 +83,15 @@ Item {
             anchors.leftMargin: 2
 
             onClicked: {
-                if (!plasmoid.expanded) {
-                    plasmoid.expanded = true;
-                    dropdownButton.checked = true; //this seems redundant, but fixes some lost updates
-                    mouseExitDelayer.stop();
-                } else if (plasmoid.expanded) {
-                    plasmoid.expanded = false;
-                    dropdownButton.checked = false; //this seems redundant, but fixes some lost updates
-                }
+                mousearea.doDropdown()
             }
+        }
+
+        Component.onCompleted: {
+            // more compact
+            rotator.mousearea.goButton.text='';
+            rotator.mousearea.runButton.text='';
+            rotator.mousearea.buttonsAlwaysVisible = true
         }
     }
 }
