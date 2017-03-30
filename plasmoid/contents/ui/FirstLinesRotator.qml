@@ -173,7 +173,7 @@ Row {
             }
             mousearea.item = item;
             
-            width = mousearea.buttonsAlwaysVisible ? label.implicitWidth + (mousearea.runButton.visible ? mousearea.runButton.implicitWidth : 0) + (mousearea.goButton.visible ? mousearea.goButton.implicitWidth : 0) + 10: (labelTooSmall? label.implicitWidth + mousearea.runButton.implicitWidth + mousearea.goButton.implicitWidth  + 10: label.implicitWidth)
+            width = mousearea.buttonsAlwaysVisible ? label.implicitWidth + (mousearea.runButton.visible ? mousearea.runButton.implicitWidth + 5: 0) + (mousearea.goButton.visible ? mousearea.goButton.implicitWidth + 5: 0): (labelTooSmall? label.implicitWidth + mousearea.runButton.implicitWidth + mousearea.goButton.implicitWidth  + 10: label.implicitWidth)
             
         }
 

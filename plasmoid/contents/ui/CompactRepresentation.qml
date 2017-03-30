@@ -80,7 +80,6 @@ Item {
             visible: root.dropdownItemsCount > 0 && (mouseIsInside || plasmoid.expanded || plasmoid.configuration.dropdownvisible)
             width: visible? dropdownButton.implicitWidth:0
             anchors.right: parent.right
-            anchors.leftMargin: 2
 
             onClicked: {
                 mousearea.doDropdown()
