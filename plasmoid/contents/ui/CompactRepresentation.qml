@@ -30,7 +30,7 @@ Item {
         }
         
         onClicked: {
-            if (!rotator.mousearea.hasClickAction) {
+            if (!rotator.mousearea.hasClickAction && root.dropdownItemsCount > 0) {
                 doDropdown();
             }
         }
