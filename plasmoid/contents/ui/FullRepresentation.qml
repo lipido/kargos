@@ -65,6 +65,7 @@ Item {
             Image {
                 id: image
                 anchors.verticalCenter: row.verticalCenter
+                fillMode: Image.PreserveAspectFit
 
                 MouseArea {
                     anchors.fill: parent
@@ -99,20 +100,26 @@ Item {
                 }
             }
             
-            PlasmaComponents.Label {
-                id: itemLabel
-                text: fullRoot.createTitleText(model);
-                wrapMode: Text.WordWrap
-                width: fullRoot.width - icon.width - arrow_icon.width - image.width - 30//some right margin
-
+            Item {
+                id: labelAndButtons
+                width:  fullRoot.width - icon.width - arrow_icon.width - image.width//some right margin
+                height: itemLabel.implicitHeight + 10
                 anchors.verticalCenter: row.verticalCenter
 
-                Component.onCompleted: {
-                    if (typeof model.font !== 'undefined') {
-                        font.family = model.font;
-                    }
-                    if (typeof model.size !== 'undefined') {
-                        font.pointSize = model.size;
+                PlasmaComponents.Label {
+                    id: itemLabel
+                    text: fullRoot.createTitleText(model);
+                    width: labelAndButtons.width - (mousearea.goButton.width) - (mousearea.runButton.width)
+                    anchors.verticalCenter: labelAndButtons.verticalCenter
+                    wrapMode: Text.WordWrap
+                   // elide: Text.ElideRight
+                    Component.onCompleted: {
+                        if (typeof model.font !== 'undefined') {
+                            font.family = model.font;
+                        }
+                        if (typeof model.size !== 'undefined') {
+                            font.pointSize = model.size;
+                        }
                     }
                 }
                 
@@ -121,12 +128,16 @@ Item {
                     item: model
                 }
             }
-            
+
             // expand-collapse icon
             PlasmaCore.IconItem {
                 id: arrow_icon
                 source: (fullRoot.categories[model.title] !== undefined && fullRoot.categories[model.title].visible) ? 'arrow-down': 'arrow-up'
                 visible: (typeof model.category === 'undefined' && fullRoot.categories[model.title] !== undefined && fullRoot.categories[model.title].items.length > 0) ? true:false
+
+                width: units.iconSizes.smallMedium
+                height: units.iconSizes.smallMedium
+
                 MouseArea {
                     cursorShape: Qt.PointingHandCursor
                     anchors.fill: parent

@@ -80,7 +80,7 @@ MouseArea {
         id: goButton
         iconMode: mousearea.iconMode
 
-        text: 'Go'
+        text: visible? 'Go to: '+item.href : ''
         iconName: 'edit-link'
 
         anchors.right: parent.right
@@ -99,11 +99,11 @@ MouseArea {
         id: runButton
         iconMode: mousearea.iconMode
 
-        text: 'Run'
+        text: visible? 'Run: '+item.bash : ''
         iconName: 'run-build'
 
         anchors.right: goButton.visible? goButton.left: parent.right
-        anchors.rightMargin: goButton.visible? (mousearea.iconMode ? 0 : 5): 0
+        anchors.rightMargin: goButton.visible? (mousearea.iconMode ? 0 : 2): 0
         anchors.verticalCenter: parent.verticalCenter
 
         visible: item!==null && (buttonsAlwaysVisible  || !buttonsShouldHide) && (typeof item.bash !== 'undefined') && (typeof item.onclick === 'undefined' || item.onclick !== 'bash')

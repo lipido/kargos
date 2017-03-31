@@ -77,8 +77,10 @@ Row {
     PlasmaCore.IconItem {
         id: icon
         visible: false
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
+
+        anchors.verticalCenter : control.verticalCenter
+        height: control.height * 0.75
+
         function update() {
             var item = getCurrentItem();
             if (item !== null) {
@@ -106,10 +108,9 @@ Row {
     Image {
         id: image
         fillMode: Image.PreserveAspectFit
-        anchors.top: control.top
-        anchors.bottom: control.bottom
-        anchors.topMargin: 2
-        anchors.bottomMargin: 2
+
+        anchors.verticalCenter : control.verticalCenter
+        height: control.height * 0.6
 
         function update() {
             var item = getCurrentItem();

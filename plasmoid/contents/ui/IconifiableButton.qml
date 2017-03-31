@@ -20,11 +20,11 @@ Item {
         implicitWidth: iconMode ? controlInnerIcon.implicitWidth: controlInnerButton.implicitWidth
         implicitHeight: iconMode ? controlInnerIcon.implicitHeight: controlInnerButton.implicitHeight
         
-        
+
         Button {
             id: controlInnerButton
             visible: !control.iconMode
-            text: control.text
+            tooltip: control.text
             iconName: control.iconName
             anchors.fill: parent
             
@@ -59,6 +59,6 @@ Item {
                 
                 onClicked: control.clicked()
             }
-  
+
         }
     }
