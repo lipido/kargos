@@ -75,14 +75,15 @@ Item {
             
             var attributesToken = line.split('|')[1].trim();
             
-            attributesToken.split(" ").forEach(function(attribute_value) {
-                
+            attributesToken = attributesToken.replace(/\\'/g, '__ESCAPED_QUOTE__');
+            var tokens = attributesToken.match(/([^\s']+=[^\s']+|[^\s']+='[^']*')+/g)
+            tokens.forEach(function(attribute_value) {
                 if (attribute_value.indexOf('=')!=-1) {
-                    parsedObject[attribute_value.split('=')[0]] = attribute_value.substring(attribute_value.indexOf('=') + 1);
+                    parsedObject[attribute_value.split('=')[0]] = attribute_value.substring(attribute_value.indexOf('=') + 1).replace(/'/g, '').replace(/__ESCAPED_QUOTE__/g, "'");
                 }
             });
         }
-        
+
         if (parsedObject.title.match(/^--/)) {
             parsedObject.title = parsedObject.title.substring(2).trim();
             if (currentCategory !== undefined) {
