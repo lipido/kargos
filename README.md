@@ -70,3 +70,22 @@ And then it will produce the following contents in your plasmoid:
 That's all. You can add the a kargo plasmoid to your panel. You have to configure 
 it to indicate the command or executable.
 
+## Another example: a RSS reader
+This a tribute to the KDE 3 KNewsTicker. There are many RSS readers, but the
+concept of KNewsTicker was unique for me. I do not like to open a RSS client
+or take any action to read feeds because, although I can do this the first days,
+in a few days I am not checking them anymore. However, with KNewsTicker, news are
+rotating continuously and in a discrete fashion. However, you will be aware of them
+sooner or later.
+
+KNewsTicker was discontinued and no longer available since KDE 4. But you can
+implement it easily with kargos and Python!
+
+You can find an [example](examples/rssnews.30m.py) of plugin to read your 
+favourite RSS feeds. News will be rotating in your panel and, if you dropdown,
+you can read all the news.
+
+Here are the results!
+
+![kargos RSS plugin](kargos-rss-example.png "kargos options panel")
+
