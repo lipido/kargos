@@ -9,6 +9,7 @@ ConfigPage {
     id: page
     
     property alias cfg_width: width.value
+    property alias cfg_compactLabelMaxWidth: compactLabelMaxWidth.value
     property alias cfg_height: height.value
     property alias cfg_dropdownvisible: dropdownvisible.checked
     
@@ -28,6 +29,16 @@ ConfigPage {
         
         SpinBox {
             id: height
+            Layout.fillWidth: true        
+            maximumValue: 10000
+        }
+    }
+    
+    ConfigSection {
+        label: i18n("Compact (on panel) fixed text width (0: unlimited)")
+        
+        SpinBox {
+            id: compactLabelMaxWidth
             Layout.fillWidth: true        
             maximumValue: 10000
         }

@@ -13,10 +13,9 @@ Row {
     height: label.implicitHeight + 20
     property bool buttonHidingDelay: false
     
-    Layout.preferredWidth: label.implicitWidth
-    
     property var rotatingItems : []
     property var currentMessage : -1
+    property int labelMaxWidth: 0
     
     readonly property alias icon: icon
     readonly property alias image: image
@@ -73,11 +72,10 @@ Row {
         }
         
     }
-    
     PlasmaCore.IconItem {
         id: icon
         visible: false
-
+        source: 'dialog-ok'
         anchors.verticalCenter : control.verticalCenter
         height: control.height * 0.75
 
@@ -157,47 +155,56 @@ Row {
         }
     }
 
-    PlasmaComponents.Label {
-        id: label
-        text: 'starting...'
-        
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        
-        property var defaultFontFamily;
-        property var defaultFontSize;
-        
-        readonly property bool labelTooSmall: label.implicitWidth < mousearea.runButton.implicitWidth + mousearea.goButton.implicitWidth + 10
-        
-        Component.onCompleted: {
-            defaultFontFamily = font.family;
-            defaultFontSize = font.pointSize;
-            update();
-            rotationTimer.running = true
-        }
-                    
+    Item {
+        id: labelAndButtons
 
-        function update() {
-            var item = getCurrentItem();
-            if (item !== null) {
-                text = item.title;
-                if (item.font !== undefined) {
-                    font.family = item.font;
-                } else {
-                    font.family = defaultFontFamily;
-                }
-                if (item.size !== undefined) {
-                    font.pointSize = item.size;
-                } else {
-                    font.pointSize = defaultFontSize;
-                }
-            } else {
-                text = 'starting...';
+        implicitWidth: label.width + (mousearea.goButton.visible? mousearea.goButton.implicitWidth + 5 :0) + (mousearea.runButton.visible?mousearea.runButton.implicitWidth + 5 : 0)
+        implicitHeight: label.implicitHeight
+
+        anchors.verticalCenter: parent.verticalCenter
+        readonly property bool labelTooSmall: label.implicitWidth < mousearea.runButton.implicitWidth + mousearea.goButton.implicitWidth + 10
+
+        PlasmaComponents.Label {
+            id: label
+            text: 'starting...'
+
+
+            property var defaultFontFamily;
+            property var defaultFontSize;
+
+            anchors.verticalCenter: parent.verticalCenter
+
+            elide: (labelMaxWidth > 0)? Text.ElideRight: Text.ElideNonde
+            width: (labelMaxWidth > 0)? labelMaxWidth: label.implicitWidth
+
+            Component.onCompleted: {
+                defaultFontFamily = font.family;
+                defaultFontSize = font.pointSize;
+                update();
+                rotationTimer.running = true
             }
-            mousearea.item = item;
-            
-            width = mousearea.buttonsAlwaysVisible ? label.implicitWidth + (mousearea.runButton.visible ? mousearea.runButton.implicitWidth + 5: 0) + (mousearea.goButton.visible ? mousearea.goButton.implicitWidth + 5: 0): (labelTooSmall? label.implicitWidth + mousearea.runButton.implicitWidth + mousearea.goButton.implicitWidth  + 10: label.implicitWidth)
-            
+
+            function update() {
+                var item = getCurrentItem();
+                if (item !== null) {
+                    text = item.title;
+                    if (item.font !== undefined) {
+                        font.family = item.font;
+                    } else {
+                        font.family = defaultFontFamily;
+                    }
+                    if (item.size !== undefined) {
+                        font.pointSize = item.size;
+                    } else {
+                        font.pointSize = defaultFontSize;
+                    }
+                } else {
+                    text = 'starting...';
+                }
+                mousearea.item = item;
+
+                var _correctedMaxWidth = label.implicitWidth
+            }
         }
 
         ItemTextMouseArea {

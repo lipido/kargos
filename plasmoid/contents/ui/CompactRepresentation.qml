@@ -54,6 +54,7 @@ Item {
             id: rotator
             buttonHidingDelay: true
             anchors.verticalCenter: parent.verticalCenter
+            labelMaxWidth: plasmoid.configuration.compactLabelMaxWidth
         }
 
         // Tooltip for arrow (taken from the systemtray plasmoid)
