@@ -34,7 +34,8 @@ To get and install the latest version:
 ```
 git clone git@github.com:lipido/kargos.git
 cd kargos
-plasmapkg2 -t plasmoid --install .plasmoid
+kpackagetool5 -t Plasma/Applet --install plasmoid
+
 ```
 
 Also, you can find a release of kargos in [kde-look.org](https://store.kde.org/p/1173112/), 
