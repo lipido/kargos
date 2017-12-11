@@ -16,6 +16,7 @@ custom plasmoids.
 - "refresh" attribute.
 - "iconName" attribute (it should be a valid KDE icon name)
 - "font" attribute.
+- "color" attribute.
 - "dropdown" attribute.
 - "image" attribute (base64 encoded image).
 - "imageURL" attribute (**non BitBar, kargos only**). A URL for the image.

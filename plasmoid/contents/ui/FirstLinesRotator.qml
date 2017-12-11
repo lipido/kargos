@@ -171,6 +171,7 @@ Row {
 
             property var defaultFontFamily;
             property var defaultFontSize;
+            property var defaultColor;
 
             anchors.verticalCenter: parent.verticalCenter
 
@@ -180,6 +181,7 @@ Row {
             Component.onCompleted: {
                 defaultFontFamily = font.family;
                 defaultFontSize = font.pointSize;
+                defaultColor = color + ''; //append '' to avoid binding to color property, we want just to intialize it.
                 update();
                 rotationTimer.running = true
             }
@@ -198,6 +200,11 @@ Row {
                     } else {
                         font.pointSize = defaultFontSize;
                     }
+                    if (item.color !== undefined) {
+                        color = item.color;
+                    } else {
+                        color = label.defaultColor
+					}
                 } else {
                     text = 'starting...';
                 }

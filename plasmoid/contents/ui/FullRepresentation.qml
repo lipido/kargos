@@ -120,6 +120,9 @@ Item {
                         if (typeof model.size !== 'undefined') {
                             font.pointSize = model.size;
                         }
+                        if (typeof model.color !== 'undefined') {
+                            color = model.color;
+                        }
                     }
                 }
                 
