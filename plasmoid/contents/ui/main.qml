@@ -120,11 +120,13 @@ Item {
         return items;
     }
     
+    function doRefreshIfNeeded(item) {
+      if (item !== null && item.refresh == 'true') {
+        root.update();
+      }
+    }
+    
     function doItemClick(item) {
-        if (item !== null && item.refresh == 'true') {
-            root.update();
-        }
-        
         
         if (item !== null && item.href !== undefined && item.onclick === 'href') {
             executable.exec('xdg-open '+item.href);
@@ -132,10 +134,16 @@ Item {
 
         if (item !== null && item.bash !== undefined && item.onclick === 'bash') {
             if (item.terminal !== undefined && item.terminal === 'true') {
-                executable.exec('konsole --noclose -e '+item.bash);
+                executable.exec('konsole --noclose -e '+item.bash, function() {
+                  doRefreshIfNeeded(item);
+                });
             } else {
-                executable.exec(item.bash);
+                executable.exec(item.bash, function() {
+                  doRefreshIfNeeded(item);
+                });
             }
+        } else {
+          doRefreshIfNeeded(item);
         }
     }
     

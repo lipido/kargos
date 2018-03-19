@@ -62,6 +62,7 @@ MouseArea {
        buttonsShouldHide = true
     }
     
+
     // workaround. When the compact representation is used (kargos in a panel)
     // the buttons disappear just before being clicked. This is caused by the
     // onExited event, which hiddes all butons, is being launched before the 
@@ -89,10 +90,14 @@ MouseArea {
         visible: item !== null && (buttonsAlwaysVisible || !buttonsShouldHide) && (typeof item.href !== 'undefined') && (typeof item.onclick === 'undefined' || item.onclick !== 'href')
 
         onClicked: {
+            
             if (item !== null && item.href !== undefined) {
                 executable.exec('xdg-open '+item.href);
             }
+            doRefreshIfNeeded(item);
+
         }
+        
     }
 
     IconifiableButton {
@@ -111,11 +116,17 @@ MouseArea {
         onClicked: {
             if (item !== null && item.bash !== undefined) {
                 if (item.terminal !== undefined && item.terminal === 'true') {
-                    executable.exec('konsole --noclose -e '+item.bash);
+                    executable.exec('konsole --noclose -e '+item.bash, function() {
+                      root.doRefreshIfNeeded(item);
+                      
+                    });
                 } else {
-                    executable.exec(item.bash);
+                    executable.exec(item.bash, function() {
+                      root.doRefreshIfNeeded(item);          
+                    });
                 }
             }
+            
         }
     }
 }
