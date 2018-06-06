@@ -27,6 +27,7 @@ ConfigPage {
         SpinBox {
             id: interval
             Layout.fillWidth: true            
+            maximumValue: 99999
         }
     }
     
