@@ -7,49 +7,71 @@ import org.kde.plasma.extras 2.0 as PlasmaExtras
 
 ConfigPage {
     id: page
-    
+
     property alias cfg_width: width.value
     property alias cfg_compactLabelMaxWidth: compactLabelMaxWidth.value
     property alias cfg_height: height.value
-    property alias cfg_dropdownvisible: dropdownvisible.checked
-    
-    
+    property alias cfg_d_arrownevervisible: d_arrownevervisible.checked
+    property alias cfg_d_arrowalwaysvisible: d_arrowalwaysvisible.checked
+    property alias cfg_d_arrowvisibleasneeded: d_arrowvisibleasneeded.checked
+
+
     ConfigSection {
         label: i18n("Preferred width in px")
-        
+
         SpinBox {
             id: width
-            Layout.fillWidth: true        
-            maximumValue: 10000
-        }
-    }
-    
-    ConfigSection {
-        label: i18n("Preferred height in px")
-        
-        SpinBox {
-            id: height
-            Layout.fillWidth: true        
-            maximumValue: 10000
-        }
-    }
-    
-    ConfigSection {
-        label: i18n("Compact (on panel) fixed text width (0: unlimited)")
-        
-        SpinBox {
-            id: compactLabelMaxWidth
-            Layout.fillWidth: true        
+            Layout.fillWidth: true
             maximumValue: 10000
         }
     }
 
     ConfigSection {
-        
-        CheckBox {
-            id: dropdownvisible
+        label: i18n("Preferred height in px")
+
+        SpinBox {
+            id: height
             Layout.fillWidth: true
-            text: 'Dropdown always visible'
+            maximumValue: 10000
         }
+    }
+
+    ConfigSection {
+        label: i18n("Compact (on panel) fixed text width (0: unlimited)")
+
+        SpinBox {
+            id: compactLabelMaxWidth
+            Layout.fillWidth: true
+            maximumValue: 10000
+        }
+    }
+
+    ConfigSection {
+
+        GroupBox {
+            title: i18n('Dropdown arrow visible option: ')
+            anchors.left: parent.left
+            Layout.columnSpan: 2
+
+            ColumnLayout {
+                ExclusiveGroup { id: dropdownArrowVisibleGroup }
+                RadioButton {
+                    id: d_arrowalwaysvisible
+                    text: i18n('Always visible')
+                    exclusiveGroup: dropdownArrowVisibleGroup
+                }
+                RadioButton {
+                    id: d_arrowvisibleasneeded
+                    text: i18n('Visible as needed')
+                    exclusiveGroup: dropdownArrowVisibleGroup
+                }
+                RadioButton {
+                    id: d_arrownevervisible
+                    text: i18n('Never visible')
+                    exclusiveGroup: dropdownArrowVisibleGroup
+                }
+            }
+        }
+
     }
 }
