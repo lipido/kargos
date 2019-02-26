@@ -3,7 +3,6 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.1
 import org.kde.plasma.core 2.0 as PlasmaCore
-import org.kde.plasma.calendar 2.0 as PlasmaCalendar
 
 Item {
     id: fullRoot
@@ -98,11 +97,15 @@ Item {
                 if (typeof model.imageHeight !== 'undefined') {
                     image.sourceSize.height = model.imageHeight
                 }
+
+                if (typeof model.image !== 'undefined' && typeof model.imageURL !== 'undefined') {
+                    image.width = 0;
+                }
             }
             
             Item {
                 id: labelAndButtons
-                width:  fullRoot.width - icon.width - arrow_icon.width - image.width//some right margin
+                width: fullRoot.width - icon.width - arrow_icon.width - image.width//some right margin
                 height: itemLabel.implicitHeight + 10
                 anchors.verticalCenter: row.verticalCenter
 
@@ -138,7 +141,7 @@ Item {
                 source: (fullRoot.categories[model.title] !== undefined && fullRoot.categories[model.title].visible) ? 'arrow-down': 'arrow-up'
                 visible: (typeof model.category === 'undefined' && fullRoot.categories[model.title] !== undefined && fullRoot.categories[model.title].items.length > 0) ? true:false
 
-                width: units.iconSizes.smallMedium
+                width: (visible) ? units.iconSizes.smallMedium : 0
                 height: units.iconSizes.smallMedium
 
                 MouseArea {
