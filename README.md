@@ -42,6 +42,8 @@ kpackagetool5 -t Plasma/Applet --install plasmoid
 Also, you can find a release of kargos in [kde-look.org](https://store.kde.org/p/1173112/), 
 so you can install it directly from your desktop by choosing "Get new widgets"
 
+If you're using Arch Linux, there's also an [AUR pacakge](https://aur.archlinux.org/packages/plasma5-applets-kargos-git/) for it.
+
 ## Example plugin
 kargos follows (part of) the [BitBar plugin](https://github.com/matryer/bitbar-plugins)
 standard, which is very simple. To create a plugin, all you have to do is to create
