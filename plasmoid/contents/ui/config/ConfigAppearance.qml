@@ -11,9 +11,9 @@ ConfigPage {
     property alias cfg_width: width.value
     property alias cfg_compactLabelMaxWidth: compactLabelMaxWidth.value
     property alias cfg_height: height.value
-    property alias cfg_d_arrownevervisible: d_arrownevervisible.checked
-    property alias cfg_d_arrowalwaysvisible: d_arrowalwaysvisible.checked
-    property alias cfg_d_arrowvisibleasneeded: d_arrowvisibleasneeded.checked
+    property alias cfg_d_ArrowNeverVisible: d_ArrowNeverVisible.checked
+    property alias cfg_d_ArrowAlwaysVisible: d_ArrowAlwaysVisible.checked
+    property alias cfg_d_ArrowVisibleAsNeeded: d_ArrowVisibleAsNeeded.checked
 
 
     ConfigSection {
@@ -56,17 +56,17 @@ ConfigPage {
             ColumnLayout {
                 ExclusiveGroup { id: dropdownArrowVisibleGroup }
                 RadioButton {
-                    id: d_arrowalwaysvisible
+                    id: d_ArrowAlwaysVisible
                     text: i18n('Always visible')
                     exclusiveGroup: dropdownArrowVisibleGroup
                 }
                 RadioButton {
-                    id: d_arrowvisibleasneeded
+                    id: d_ArrowVisibleAsNeeded
                     text: i18n('Visible as needed')
                     exclusiveGroup: dropdownArrowVisibleGroup
                 }
                 RadioButton {
-                    id: d_arrownevervisible
+                    id: d_ArrowNeverVisible
                     text: i18n('Never visible')
                     exclusiveGroup: dropdownArrowVisibleGroup
                 }

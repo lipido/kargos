@@ -26,7 +26,7 @@
     <entry name="height" type="int">
       <default>600</default>
     </entry>
-    <entry name="d_arrownevervisible" type="Bool">
+    <entry name="d_ArrowNeverVisible" type="Bool">
         <default>true</default>
     </entry>
   </group>

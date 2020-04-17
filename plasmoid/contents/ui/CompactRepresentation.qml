@@ -67,7 +67,7 @@ Item {
             implicitWidth: units.iconSizes.smallMedium
             implicitHeight: units.iconSizes.smallMedium
 
-            visible: (root.dropdownItemsCount > 0) && (!plasmoid.configuration.d_arrownevervisible) && (mouseIsInside || plasmoid.expanded || plasmoid.configuration.d_arrowalwaysvisible)
+            visible: (root.dropdownItemsCount > 0) && (!plasmoid.configuration.d_ArrowNeverVisible) && (mouseIsInside || plasmoid.expanded || plasmoid.configuration.d_ArrowAlwaysVisible)
 
             anchors {
                 right: parent.right
