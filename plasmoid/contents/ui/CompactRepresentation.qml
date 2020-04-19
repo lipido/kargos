@@ -27,13 +27,13 @@ import org.kde.plasma.core 2.0 as PlasmaCore
 
 
 Item {
-    
+
     id: compactRoot
-    
+
     Layout.preferredWidth: rotator.implicitWidth + (dropdownButton.visible?dropdownButton.implicitWidth + 5 : 0)
 
     property var mouseIsInside: false;
-    
+
     MouseArea {
         id: mousearea
         hoverEnabled: true
@@ -47,7 +47,7 @@ Item {
         onExited: {
             mouseExitDelayer.restart();
         }
-        
+
         onClicked: {
             if (!rotator.mousearea.hasClickAction && root.dropdownItemsCount > 0) {
                 doDropdown();
@@ -88,7 +88,7 @@ Item {
             implicitWidth: units.iconSizes.smallMedium
             implicitHeight: units.iconSizes.smallMedium
 
-            visible: root.dropdownItemsCount > 0 && (mouseIsInside || plasmoid.expanded || plasmoid.configuration.dropdownvisible)
+            visible: (root.dropdownItemsCount > 0) && (!plasmoid.configuration.d_ArrowNeverVisible) && (mouseIsInside || plasmoid.expanded || plasmoid.configuration.d_ArrowAlwaysVisible)
 
             anchors {
                 right: parent.right

@@ -30,6 +30,7 @@ import org.kde.kquickcontrolsaddons 2.0
 Item {
     id: root
     
+    // status bar only show icon, no words if constrained
     Plasmoid.preferredRepresentation: isConstrained() ? Plasmoid.compactRepresentation : Plasmoid.fullRepresentation
     //Plasmoid.preferredRepresentation: Plasmoid.compactRepresentation
 
@@ -95,6 +96,7 @@ Item {
             
             var attributesToken = line.split('|')[1].trim();
             
+            // replace \' to string __ESCAPED_QUOTE__
             attributesToken = attributesToken.replace(/\\'/g, '__ESCAPED_QUOTE__');
             var tokens = attributesToken.match(/([^\s']+=[^\s']+|[^\s']+='[^']*')+/g)
             tokens.forEach(function(attribute_value) {
@@ -104,6 +106,7 @@ Item {
             });
         }
 
+        // submenus
         if (parsedObject.title.match(/^--/)) {
             parsedObject.title = parsedObject.title.substring(2).trim();
             if (currentCategory !== undefined) {
