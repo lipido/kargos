@@ -243,9 +243,24 @@ Item {
                 function(item) {
                     return item.dropdown === undefined || item.dropdown !== 'false'
                 }).length;
-                
+
             if (stdout.indexOf('---') === -1) {
                 plasmoid.expanded = false
+            }
+        }
+    }
+
+    Connections {
+        target: plasmoid
+        // `externalData` is emitted when the containment decides to send data to a plasmoid.
+        // More usefully (for us at least), plasmoidviewer also sends its first argument this way.
+        // So, for development we can do:
+        // $ plasmoidviewer -a ./plasmoid "echo hello world"
+        // and this will set the command as "echo hello world".
+        onExternalData: function (mimeType, data) {
+            console.debug(`Got '${data}' as externalData.`);
+            if (!command) {
+                command = data;
             }
         }
     }
