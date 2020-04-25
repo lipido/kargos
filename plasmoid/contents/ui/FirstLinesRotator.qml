@@ -85,7 +85,7 @@ Row {
         rotatingItems = newItems;
         
         
-        if (plasmoid.configuration.command == '') {
+        if (root.command == '') {
             label.text = 'No command configured. Go to settings...';
         } else {
             updateItems();
