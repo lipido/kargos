@@ -26,6 +26,7 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import org.kde.plasma.core 2.0 as PlasmaCore
 import org.kde.plasma.plasmoid 2.0
 import org.kde.kquickcontrolsaddons 2.0
+import "../vendor/FontAwesome"
 
 Item {
     id: root
@@ -36,7 +37,8 @@ Item {
 
     Plasmoid.compactRepresentation: CompactRepresentation {}
     Plasmoid.fullRepresentation: FullRepresentation {}
-    
+//    Plasmoid.fullRepresentation: Text { text: FontAwesome.bullseye }
+
     property int interval;    
     property int dropdownItemsCount: -1;
     
