@@ -49,9 +49,10 @@ You can use them with the `kargos.fa_icon` attribute, like so:
 echo "Hello world! | kargos.fa_icon=globe size=16";
 ```
 This would cause Kargos to render:  
-![Kargos examples/font-awesome.sh screenshot](./examples/font_awesome.png)
+![Kargos examples/font-awesome.sh screenshot](examples/font_awesome.png)
 
-Note that this uses font awesome version 4.7, so make sure you filter by that version if you use [their gallery](https://fontawesome.com/v4.7.0/icons/). Furthermore, some of their icons are not free and can't be used in Kargos. Refer to [plasmoid/contents/vendor/FontAwesome/FontAwesome.qml] as the source of truth for icons that are definitely usable in Kargos.
+Note that this uses font awesome version 4.7, so make sure you filter by that version if you use [their gallery](https://fontawesome.com/v4.7.0/icons/). Furthermore, some of their icons are not free and can't be used in Kargos.
+Refer to the [plasmoid/contents/vendor/FontAwesome/FontAwesome.qml](plasmoid/contents/vendor/FontAwesome/FontAwesome.qml) file for an authoritative list of icons that can be used in Kargos.
 
 
 ## Installation
