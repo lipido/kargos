@@ -93,3 +93,8 @@ Here are the results!
 
 ![kargos RSS plugin](kargos-rss-example.png "kargos options panel")
 
+## Discussion / Contributing
+Have questions, ideas, or just wanna talk about Kargos? Come join us at [#kargos:kde.org](https://matrix.to/#/!JJUzArvSQNWhqQsQVB:kde.org?via=kde.org&via=lasath.org).
+
+Note that this is a matrix channel, not IRC. [Matrix](https://matrix.org) is (in many ways) the successor to IRC and KDE is already using it. The [KDE wiki has a nice guide](https://community.kde.org/Matrix) for getting started if you've never used matrix client before.
+
