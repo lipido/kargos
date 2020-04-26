@@ -29,9 +29,35 @@ custom plasmoids.
 - HTML support. Only the subset [supported by QML](http://doc.qt.io/qt-5/richtext-html-subset.html).
 - Interval detection on the command filename. A custom interval option is available.
 
+## Extras / Extensions
+
+We've added a few extensions to the BitBar/Argos protocol, for extra features the authors wanted.
+All of these are prefixed with `kargos.`.
+
+### Icons from Font Awesome
+
+When writing quick bash scripts for personal use, coming up with icons that look decent on various screen sizes/densities is a pain.
+Using plasma's icons look beautiful, but they are a rather limited selection.
+
+[Font Awesome](https://fontawesome.com/v4.7.0/icons/) on the other hand, have a vast library of icons that are, well... awesome!  
+You can use them with the `kargos.fa_icon` attribute, like so:
+
+```bash
+#!/bin/bash
+
+# Note: font awesome icon size is determined by font size
+echo "Hello world! | kargos.fa_icon=globe size=16";
+```
+This would cause Kargos to render:  
+![Kargos examples/font-awesome.sh screenshot](./examples/font_awesome.png)
+
+Note that this uses font awesome version 4.7, so make sure you filter by that version if you use [their gallery](https://fontawesome.com/v4.7.0/icons/). Furthermore, some of their icons are not free and can't be used in Kargos. Refer to [plasmoid/contents/vendor/FontAwesome/FontAwesome.qml] as the source of truth for icons that are definitely usable in Kargos.
+
+
 ## Installation
 
 To get and install the latest version:
+
 ```
 git clone git@github.com:lipido/kargos.git
 cd kargos
