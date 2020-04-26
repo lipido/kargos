@@ -23,6 +23,7 @@ import org.kde.plasma.components 2.0 as PlasmaComponents
 import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.1
 import org.kde.plasma.core 2.0 as PlasmaCore
+import "../vendor/FontAwesome"
 
 Row {
     id: control
@@ -209,7 +210,12 @@ Row {
             function update() {
                 var item = getCurrentItem();
                 if (item !== null) {
-                    text = item.title;
+                    if (item["kargos.fa_icon"]) {
+                        text = FontAwesome[item["kargos.fa_icon"]] + " " + item.title;
+                    } else {
+                        text = item.title;
+                    }
+
                     if (item.font !== undefined) {
                         font.family = item.font;
                     } else {
