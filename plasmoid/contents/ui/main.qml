@@ -258,7 +258,7 @@ Item {
         // $ plasmoidviewer -a ./plasmoid "echo hello world"
         // and this will set the command as "echo hello world".
         onExternalData: function (mimeType, data) {
-            console.debug(`Got '${data}' as externalData.`);
+            console.debug("Got externalData: " + data);
             if (!command) {
                 command = data;
             }
