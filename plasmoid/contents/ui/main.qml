@@ -92,7 +92,7 @@ Item {
         var parsedObject = {title: line};
         
         if (line.indexOf('|') != -1) {
-            parsedObject.title = line.split('|')[0].trim();
+            parsedObject.title = line.split('|')[0].replace(/\s+$/, '');
             
             var attributesToken = line.split('|')[1].trim();
             
