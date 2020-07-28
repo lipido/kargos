@@ -188,7 +188,7 @@ Row {
         PlasmaComponents.Label {
             id: label
             text: 'starting...'
-
+            textFormat: Text.RichText
 
             property var defaultFontFamily;
             property var defaultFontSize;
